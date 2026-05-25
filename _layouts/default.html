@@ -39,25 +39,6 @@
       overflow-x: hidden;
     }
 
-    .icon-grid {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-
-    .icon-cell {
-      position: absolute;
-      width: 62px;
-      height: 62px;
-      opacity: 0.16;
-      filter: saturate(0.98);
-      transition: opacity 900ms ease;
-    }
-
-    .icon-cell.pulse { opacity: 0.8; }
-    .icon-cell.dark { opacity: 0.26; filter: saturate(1.02) brightness(1.35); }
 
     .site-shell {
       max-width: 1120px;
@@ -103,6 +84,66 @@
       padding: 1.1rem 1.2rem 1rem;
       position: relative;
       overflow: hidden;
+    }
+
+    .header-badge {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid rgba(151, 181, 217, 0.35);
+      background: rgba(24, 35, 54, 0.75);
+      cursor: pointer;
+      user-select: none;
+      transition: transform 140ms ease, border-color 140ms ease;
+    }
+
+    .header-badge:hover {
+      transform: translateY(-1px);
+      border-color: rgba(139, 233, 253, 0.65);
+    }
+
+    .header-badge img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
+      pointer-events: none;
+    }
+
+    .header-badge-beer {
+      position: absolute;
+      top: 10px;
+      right: 52px;
+      z-index: 2;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: 1px solid rgba(151, 181, 217, 0.35);
+      background: rgba(24, 35, 54, 0.75);
+      opacity: 0;
+      transform: translateY(-6px) scale(0.92);
+      transition: opacity 240ms ease, transform 240ms ease;
+      pointer-events: none;
+    }
+
+    .header-badge-beer.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .header-badge-beer img {
+      width: 22px;
+      height: 22px;
+      object-fit: contain;
     }
 
     .site-head::after {
@@ -215,14 +256,18 @@
       .brand { font-size: 1.9rem; }
       .subtitle { font-size: 0.94rem; }
       .article-card h1 { font-size: 1.75rem; }
-      .icon-grid { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="icon-grid" id="icon-grid" aria-hidden="true"></div>
   <div class="site-shell">
     <header class="site-head">
+      <button class="header-badge" id="linux-easter-trigger" type="button" aria-label="Linux badge">
+        <img src="{{ '/assets/stickers/tools/linux.svg' | relative_url }}" alt="">
+      </button>
+      <div class="header-badge-beer" id="beer-easter-egg" aria-hidden="true">
+        <img src="{{ '/assets/stickers/memes/beer.svg' | relative_url }}" alt="">
+      </div>
       <h1 class="brand"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
       <p class="subtitle">{{ site.description }}</p>
     </header>
@@ -236,157 +281,24 @@
   </div>
   <script>
     (function () {
-      var container = document.getElementById("icon-grid");
-      if (!container) return;
+      var trigger = document.getElementById("linux-easter-trigger");
+      var beer = document.getElementById("beer-easter-egg");
+      if (!trigger || !beer) return;
 
-      var icons = [
-        "{{ '/assets/stickers/tools/amazonwebservices-plain-wordmark.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/ansible.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/argo.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/bitwarden.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/clickhouse.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/cloudflare.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/docker.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/elasticsearch.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/gcp.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/github-actions.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/gitlab.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/grafana.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/graylog.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/helm.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/influxdb.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/jenkins.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/kafka.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/kibana.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/kubernetes.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/linux.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/logstash.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/mongodb.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/mysql.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/newrelic.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/nginx.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/openvpn.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/owncloud.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/postgresql.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/prometheus.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/proxmox.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/rabbitmq.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/redis.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/sentry.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/terraform.svg' | relative_url }}",
-        "{{ '/assets/stickers/tools/traefik.svg' | relative_url }}",
-        "{{ '/assets/stickers/memes/beer.svg' | relative_url }}"
-      ];
+      var clicks = 0;
+      var resetTimer = null;
 
-      var iconSize = 62;
-      var sidePadding = 16;
-      var rowStep = 118;
-      var yOffset = 10;
-      var shell = document.querySelector(".site-shell");
-      var rect = shell ? shell.getBoundingClientRect() : { left: window.innerWidth * 0.2, right: window.innerWidth * 0.8 };
-      var leftZoneWidth = Math.max(0, Math.floor(rect.left) - sidePadding * 2);
-      var rightZoneWidth = Math.max(0, Math.floor(window.innerWidth - rect.right) - sidePadding * 2);
-      var rows = Math.ceil(window.innerHeight / rowStep) + 1;
-      var leftCols = Math.max(1, Math.floor(leftZoneWidth / 92));
-      var rightCols = Math.max(1, Math.floor(rightZoneWidth / 92));
-      var allCells = [];
-      var totalCells = rows * (leftCols + rightCols);
-      var iconQueue = [];
+      trigger.addEventListener("click", function () {
+        clicks += 1;
+        if (resetTimer) clearTimeout(resetTimer);
+        resetTimer = setTimeout(function () { clicks = 0; }, 1200);
 
-      function shuffle(arr) {
-        for (var i = arr.length - 1; i > 0; i--) {
-          var j = Math.floor(Math.random() * (i + 1));
-          var t = arr[i];
-          arr[i] = arr[j];
-          arr[j] = t;
+        if (clicks >= 3) {
+          beer.classList.add("show");
+          clicks = 0;
+          setTimeout(function () { beer.classList.remove("show"); }, 2200);
         }
-      }
-
-      function buildIconQueue() {
-        var expanded = [];
-        for (var i = 0; i < icons.length; i++) {
-          var repeats = 1 + Math.floor(Math.random() * 3); // max 1-3 repeats per icon
-          for (var r = 0; r < repeats; r++) expanded.push(icons[i]);
-        }
-        shuffle(expanded);
-        if (expanded.length > totalCells) expanded = expanded.slice(0, totalCells);
-        return expanded;
-      }
-
-      iconQueue = buildIconQueue();
-      if (iconQueue.length === 0) return;
-
-      function placeCell(x, y) {
-        if (iconQueue.length === 0) return;
-        var src = iconQueue.pop();
-        var img = document.createElement("img");
-        img.className = "icon-cell";
-        img.src = src;
-        img.alt = "";
-        img.style.width = iconSize + "px";
-        img.style.height = iconSize + "px";
-        img.style.left = Math.round(x) + "px";
-        img.style.top = Math.round(y) + "px";
-        if (
-          src.indexOf("kubernetes.svg") !== -1 ||
-          src.indexOf("bitwarden.svg") !== -1 ||
-          src.indexOf("postgresql.svg") !== -1 ||
-          src.indexOf("github-actions.svg") !== -1 ||
-          src.indexOf("gitlab.svg") !== -1 ||
-          src.indexOf("terraform.svg") !== -1 ||
-          src.indexOf("proxmox.svg") !== -1 ||
-          src.indexOf("newrelic.svg") !== -1 ||
-          src.indexOf("mysql.svg") !== -1
-        ) {
-          img.classList.add("dark");
-        }
-        container.appendChild(img);
-        allCells.push(img);
-      }
-
-      var leftStart = sidePadding;
-      var leftSpan = Math.max(1, leftZoneWidth - iconSize);
-      var leftColStep = leftCols > 1 ? leftSpan / (leftCols - 1) : 0;
-      for (var r1 = 0; r1 < rows; r1++) {
-        var y1 = yOffset + r1 * rowStep;
-        for (var c1 = 0; c1 < leftCols; c1++) {
-          var x1 = leftStart + c1 * leftColStep + (r1 % 2 ? 8 : -8);
-          placeCell(x1, y1);
-        }
-      }
-
-      var rightStart = Math.floor(rect.right) + sidePadding;
-      var rightSpan = Math.max(1, rightZoneWidth - iconSize);
-      var rightColStep = rightCols > 1 ? rightSpan / (rightCols - 1) : 0;
-      for (var r2 = 0; r2 < rows; r2++) {
-        var y2 = yOffset + r2 * rowStep;
-        for (var c2 = 0; c2 < rightCols; c2++) {
-          var x2 = rightStart + c2 * rightColStep + (r2 % 2 ? -8 : 8);
-          placeCell(x2, y2);
-        }
-      }
-
-      function pickRandomCells() {
-        var targetCount = 3 + Math.floor(Math.random() * 3);
-        var selected = [];
-        for (var i = 0; i < targetCount && allCells.length > 0; i++) {
-          var idx = Math.floor(Math.random() * allCells.length);
-          var el = allCells[idx];
-          if (selected.indexOf(el) === -1) selected.push(el);
-        }
-        return selected;
-      }
-
-      function pulse() {
-        var current = pickRandomCells();
-        for (var i = 0; i < current.length; i++) current[i].classList.add("pulse");
-        setTimeout(function () {
-          for (var j = 0; j < current.length; j++) current[j].classList.remove("pulse");
-        }, 1100);
-      }
-
-      pulse();
-      setInterval(pulse, 2600);
+      });
     })();
   </script>
 </body>
