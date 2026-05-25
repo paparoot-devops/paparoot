@@ -16,9 +16,23 @@ layout: default
 .post-card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 1rem;
   margin-bottom: 0.95rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  position: relative;
+}
+
+.post-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--brand-3));
+  opacity: 0.65;
 }
 
 .post-card h2 {
@@ -49,7 +63,9 @@ layout: default
   width: 108px;
   height: 108px;
   border-radius: 10px;
-  background: linear-gradient(145deg, #1f2937, #0f172a);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(34, 211, 238, 0.24) 0, transparent 42%),
+    linear-gradient(145deg, #1f2937, #0f172a);
   border: 1px solid #334155;
 }
 
@@ -74,7 +90,7 @@ layout: default
 .sidebar-box {
   background: #2d3949;
   border: 1px solid var(--line);
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 0.75rem;
   overflow: hidden;
 }
@@ -95,7 +111,7 @@ layout: default
   box-sizing: border-box;
   padding: 0.52rem 0.62rem;
   border: 1px solid var(--line-strong);
-  border-radius: 7px;
+  border-radius: 8px;
   background: #1f2a39;
   color: #e8f2ff;
 }
