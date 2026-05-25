@@ -2,10 +2,185 @@
 layout: default
 ---
 
-<div class="content-shell">
-  <article class="article-card">
-    <h1>{{ page.title }}</h1>
-    <div class="post-meta">{{ page.date | date: "%Y-%m-%d" }}</div>
-    {{ content }}
-  </article>
+<style>
+.post-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(240px, 0.9fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.post-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+}
+
+.muted-dot { opacity: 0.8; }
+
+.toc-box,
+.related-box {
+  background: #2d3949;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.box-title {
+  margin: 0;
+  padding: 0.62rem 0.78rem;
+  border-bottom: 1px solid var(--line);
+  background: #253142;
+  color: #eaf2ff;
+  font-size: 1rem;
+}
+
+.box-inner {
+  padding: 0.72rem 0.78rem;
+  color: #d7e3f5;
+}
+
+.toc-list {
+  margin: 0;
+  padding-left: 1rem;
+  list-style: none;
+}
+
+.toc-list li { margin: 0.35rem 0; }
+.toc-list li.toc-h3 { padding-left: 0.65rem; }
+.toc-list a {
+  color: #cde5ff;
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+}
+
+.toc-list a:hover { border-bottom-color: #72def3; }
+
+.related-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.related-list li { margin: 0 0 0.5rem; }
+.related-list a { color: #d9eaff; text-decoration: none; }
+.related-list a:hover { color: #8be9fd; }
+
+.article-card pre {
+  position: relative;
+  padding-top: 2rem;
+}
+
+.code-copy {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.5rem;
+  font-size: 0.74rem;
+  border: 1px solid #3f526e;
+  background: #1a2737;
+  color: #9fe9f7;
+  border-radius: 7px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 940px) {
+  .post-grid { grid-template-columns: 1fr; }
+}
+</style>
+
+<div class="post-grid">
+  <main>
+    <div class="content-shell">
+      <article class="article-card" id="post-article">
+        <h1>{{ page.title }}</h1>
+        {% assign words = content | strip_html | number_of_words %}
+        {% assign reading_time = words | plus: 199 | divided_by: 200 %}
+        {% if reading_time < 1 %}{% assign reading_time = 1 %}{% endif %}
+        <div class="post-meta post-meta-row">
+          <span>{{ page.date | date: "%Y-%m-%d" }}</span>
+          <span class="muted-dot">•</span>
+          <span>{{ reading_time }} min read</span>
+        </div>
+        {{ content }}
+      </article>
+    </div>
+
+    {% assign related_pool = site.posts | where_exp: "p", "p.url != page.url" %}
+    {% assign related_count = 0 %}
+    <section class="content-shell">
+      <div class="related-box">
+        <h3 class="box-title">Схожі кейси</h3>
+        <div class="box-inner">
+          <ul class="related-list">
+            {% for p in related_pool %}
+              {% assign match = false %}
+              {% for t in page.tags %}
+                {% if p.tags contains t %}{% assign match = true %}{% endif %}
+              {% endfor %}
+              {% if match and related_count < 3 %}
+                <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
+                {% assign related_count = related_count | plus: 1 %}
+              {% endif %}
+            {% endfor %}
+            {% if related_count == 0 %}
+              {% for p in related_pool limit: 3 %}
+                <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a></li>
+              {% endfor %}
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside>
+    <div class="toc-box" id="toc-box">
+      <h3 class="box-title">Зміст</h3>
+      <div class="box-inner">
+        <ul class="toc-list" id="toc-list"></ul>
+      </div>
+    </div>
+  </aside>
 </div>
+
+<script>
+(function () {
+  var article = document.getElementById('post-article');
+  var tocList = document.getElementById('toc-list');
+  var tocBox = document.getElementById('toc-box');
+  if (article && tocList) {
+    var headings = Array.prototype.slice.call(article.querySelectorAll('h2, h3'));
+    headings.forEach(function (h, i) {
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      var li = document.createElement('li');
+      li.className = h.tagName.toLowerCase() === 'h3' ? 'toc-h3' : 'toc-h2';
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = h.textContent;
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+    if (!headings.length && tocBox) tocBox.style.display = 'none';
+  }
+
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('.article-card pre'));
+  blocks.forEach(function (pre) {
+    var btn = document.createElement('button');
+    btn.className = 'code-copy';
+    btn.type = 'button';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', function () {
+      var code = pre.querySelector('code');
+      var text = code ? code.innerText : pre.innerText;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = 'Copy'; }, 1200);
+      });
+    });
+    pre.appendChild(btn);
+  });
+})();
+</script>

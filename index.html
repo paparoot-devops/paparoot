@@ -159,7 +159,10 @@ layout: default
       data-search="{{ post.title | downcase | escape }} {{ post.excerpt | strip_html | downcase | escape }} {{ post.tags | join: ' ' | downcase | escape }}"
     >
       <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-      <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }}</div>
+      {% assign words = post.content | strip_html | number_of_words %}
+      {% assign reading_time = words | plus: 199 | divided_by: 200 %}
+      {% if reading_time < 1 %}{% assign reading_time = 1 %}{% endif %}
+      <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }} · {{ reading_time }} min read</div>
       <div class="post-body">
         <div class="thumb" aria-hidden="true"></div>
         <div>
