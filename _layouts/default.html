@@ -46,23 +46,8 @@
       z-index: 0;
     }
 
-    .edge-col {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: min(260px, 20vw);
-      display: grid;
-      grid-template-rows: repeat(12, minmax(42px, 1fr));
-      align-items: center;
-      justify-items: start;
-      padding: 0.8rem 0.5rem;
-      gap: 0.25rem;
-    }
-
-    .edge-col.left { left: 0; }
-    .edge-col.right { right: 0; justify-items: end; }
-
     .sticker-img {
+      position: absolute;
       width: 66px;
       height: 66px;
       object-fit: contain;
@@ -75,31 +60,6 @@
     .sticker-img.big { width: 86px; height: 86px; opacity: 0.14; }
     .sticker-img.tiny { width: 50px; height: 50px; opacity: 0.14; }
 
-    .edge-col.left .sticker-img:nth-child(3n+1) {
-      transform: translateX(6px) rotate(-7deg);
-    }
-    .edge-col.left .sticker-img:nth-child(3n+2) {
-      transform: translateX(26px) rotate(5deg);
-    }
-    .edge-col.left .sticker-img:nth-child(3n) {
-      transform: translateX(44px) rotate(-2deg);
-    }
-
-    .edge-col.right .sticker-img:nth-child(3n+1) {
-      transform: translateX(-8px) rotate(6deg);
-    }
-    .edge-col.right .sticker-img:nth-child(3n+2) {
-      transform: translateX(-30px) rotate(-5deg);
-    }
-    .edge-col.right .sticker-img:nth-child(3n) {
-      transform: translateX(-48px) rotate(2deg);
-    }
-
-    .sticker.s2 { animation-duration: 32s; }
-    .sticker.s3 { animation-duration: 28s; }
-    .sticker.s4 { animation-duration: 36s; }
-    .sticker.s5 { animation-duration: 30s; }
-    .sticker.s6 { animation-duration: 34s; }
     .sticker-img.s2 { animation-duration: 32s; }
     .sticker-img.s3 { animation-duration: 28s; }
     .sticker-img.s4 { animation-duration: 36s; }
@@ -272,44 +232,41 @@
       .brand { font-size: 1.9rem; }
       .subtitle { font-size: 0.94rem; }
       .article-card h1 { font-size: 1.75rem; }
-      .edge-col { display: none; }
+      .sticker-img { display: none; }
     }
   </style>
 </head>
 <body>
   <div class="bg-stickers" aria-hidden="true">
-    <div class="edge-col left">
-      <img class="sticker-img s1" src="{{ '/assets/stickers/tools/kubernetes.svg' | relative_url }}" alt="">
-      <img class="sticker-img s5 soft" src="{{ '/assets/stickers/tools/ansible.svg' | relative_url }}" alt="">
-      <img class="sticker-img s6 soft" src="{{ '/assets/stickers/tools/prometheus.svg' | relative_url }}" alt="">
-      <img class="sticker-img s4 soft" src="{{ '/assets/stickers/tools/grafana.svg' | relative_url }}" alt="">
-      <img class="sticker-img s7 soft" src="{{ '/assets/stickers/tools/logstash.svg' | relative_url }}" alt="">
-      <img class="sticker-img s8 soft" src="{{ '/assets/stickers/tools/elasticsearch.svg' | relative_url }}" alt="">
-      <img class="sticker-img s3 soft" src="{{ '/assets/stickers/tools/kibana.svg' | relative_url }}" alt="">
-      <img class="sticker-img s5 soft" src="{{ '/assets/stickers/tools/openvpn.svg' | relative_url }}" alt="">
-      <img class="sticker-img s6 soft" src="{{ '/assets/stickers/tools/newrelic.svg' | relative_url }}" alt="">
-      <img class="sticker-img s7 soft tiny" src="{{ '/assets/stickers/tools/clickhouse.svg' | relative_url }}" alt="">
-      <img class="sticker-img s8 soft tiny" src="{{ '/assets/stickers/tools/redis.svg' | relative_url }}" alt="">
-      <img class="sticker-img s6 big" src="{{ '/assets/stickers/memes/beer.svg' | relative_url }}" alt="">
-    </div>
-    <div class="edge-col right">
-      <img class="sticker-img s2" src="{{ '/assets/stickers/tools/terraform.svg' | relative_url }}" alt="">
-      <img class="sticker-img s3 soft tiny" src="{{ '/assets/stickers/tools/docker.svg' | relative_url }}" alt="">
-      <img class="sticker-img s4 soft" src="{{ '/assets/stickers/tools/helm.svg' | relative_url }}" alt="">
-      <img class="sticker-img s5 soft" src="{{ '/assets/stickers/tools/argo.svg' | relative_url }}" alt="">
-      <img class="sticker-img s6 soft" src="{{ '/assets/stickers/tools/github-actions.svg' | relative_url }}" alt="">
-      <img class="sticker-img s7 soft tiny" src="{{ '/assets/stickers/tools/gitlab.svg' | relative_url }}" alt="">
-      <img class="sticker-img s8 soft" src="{{ '/assets/stickers/tools/jenkins.svg' | relative_url }}" alt="">
-      <img class="sticker-img s3 soft" src="{{ '/assets/stickers/tools/postgresql.svg' | relative_url }}" alt="">
-      <img class="sticker-img s4 soft" src="{{ '/assets/stickers/tools/rabbitmq.svg' | relative_url }}" alt="">
-      <img class="sticker-img s5 soft" src="{{ '/assets/stickers/tools/kafka.svg' | relative_url }}" alt="">
-      <img class="sticker-img s6 soft" src="{{ '/assets/stickers/tools/cloudflare.svg' | relative_url }}" alt="">
-      <img class="sticker-img s7 soft" src="{{ '/assets/stickers/tools/gcp.svg' | relative_url }}" alt="">
-      <img class="sticker-img s8 soft" src="{{ '/assets/stickers/tools/amazonwebservices-original-wordmark.svg' | relative_url }}" alt="">
-      <img class="sticker-img s5 soft" src="{{ '/assets/stickers/tools/amazonwebservices-plain-wordmark.svg' | relative_url }}" alt="">
-      <img class="sticker-img s6 soft" src="{{ '/assets/stickers/tools/amazonwebservices-line-wordmark.svg' | relative_url }}" alt="">
-      <img class="sticker-img s7 soft" src="{{ '/assets/stickers/tools/bitwarden.svg' | relative_url }}" alt="">
-    </div>
+    <img class="sticker-img s1" style="top: 2%; left: 0.8%; transform: rotate(-8deg);" src="{{ '/assets/stickers/tools/kubernetes.svg' | relative_url }}" alt="">
+    <img class="sticker-img s5 soft" style="top: 10%; left: 3.6%; transform: rotate(7deg);" src="{{ '/assets/stickers/tools/ansible.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 soft" style="top: 17%; left: 1.2%; transform: rotate(-4deg);" src="{{ '/assets/stickers/tools/prometheus.svg' | relative_url }}" alt="">
+    <img class="sticker-img s4 soft" style="top: 24%; left: 4.8%; transform: rotate(5deg);" src="{{ '/assets/stickers/tools/grafana.svg' | relative_url }}" alt="">
+    <img class="sticker-img s7 soft tiny" style="top: 31%; left: 2%; transform: rotate(-10deg);" src="{{ '/assets/stickers/tools/logstash.svg' | relative_url }}" alt="">
+    <img class="sticker-img s8 soft" style="top: 38%; left: 5%; transform: rotate(6deg);" src="{{ '/assets/stickers/tools/elasticsearch.svg' | relative_url }}" alt="">
+    <img class="sticker-img s3 soft tiny" style="top: 46%; left: 0.7%; transform: rotate(-3deg);" src="{{ '/assets/stickers/tools/kibana.svg' | relative_url }}" alt="">
+    <img class="sticker-img s5 soft" style="top: 54%; left: 4.4%; transform: rotate(8deg);" src="{{ '/assets/stickers/tools/openvpn.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 soft tiny" style="top: 62%; left: 1.5%; transform: rotate(-5deg);" src="{{ '/assets/stickers/tools/newrelic.svg' | relative_url }}" alt="">
+    <img class="sticker-img s7 soft tiny" style="top: 70%; left: 5.2%; transform: rotate(9deg);" src="{{ '/assets/stickers/tools/clickhouse.svg' | relative_url }}" alt="">
+    <img class="sticker-img s8 soft tiny" style="top: 78%; left: 2.2%; transform: rotate(-2deg);" src="{{ '/assets/stickers/tools/redis.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 big" style="top: 90%; left: 1.4%; transform: rotate(3deg);" src="{{ '/assets/stickers/memes/beer.svg' | relative_url }}" alt="">
+
+    <img class="sticker-img s2" style="top: 1.5%; right: 0.9%; transform: rotate(6deg);" src="{{ '/assets/stickers/tools/terraform.svg' | relative_url }}" alt="">
+    <img class="sticker-img s3 soft tiny" style="top: 8%; right: 4.8%; transform: rotate(-8deg);" src="{{ '/assets/stickers/tools/docker.svg' | relative_url }}" alt="">
+    <img class="sticker-img s4 soft" style="top: 14%; right: 1.4%; transform: rotate(5deg);" src="{{ '/assets/stickers/tools/helm.svg' | relative_url }}" alt="">
+    <img class="sticker-img s5 soft" style="top: 21%; right: 5.1%; transform: rotate(-7deg);" src="{{ '/assets/stickers/tools/argo.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 soft" style="top: 28%; right: 1.7%; transform: rotate(8deg);" src="{{ '/assets/stickers/tools/github-actions.svg' | relative_url }}" alt="">
+    <img class="sticker-img s7 soft tiny" style="top: 35%; right: 5.4%; transform: rotate(-4deg);" src="{{ '/assets/stickers/tools/gitlab.svg' | relative_url }}" alt="">
+    <img class="sticker-img s8 soft" style="top: 42%; right: 1.2%; transform: rotate(9deg);" src="{{ '/assets/stickers/tools/jenkins.svg' | relative_url }}" alt="">
+    <img class="sticker-img s3 soft tiny" style="top: 49%; right: 5.1%; transform: rotate(-5deg);" src="{{ '/assets/stickers/tools/postgresql.svg' | relative_url }}" alt="">
+    <img class="sticker-img s4 soft" style="top: 56%; right: 1.5%; transform: rotate(4deg);" src="{{ '/assets/stickers/tools/rabbitmq.svg' | relative_url }}" alt="">
+    <img class="sticker-img s5 soft" style="top: 63%; right: 5.3%; transform: rotate(-9deg);" src="{{ '/assets/stickers/tools/kafka.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 soft tiny" style="top: 70%; right: 1%; transform: rotate(3deg);" src="{{ '/assets/stickers/tools/cloudflare.svg' | relative_url }}" alt="">
+    <img class="sticker-img s7 soft" style="top: 77%; right: 4.7%; transform: rotate(-7deg);" src="{{ '/assets/stickers/tools/gcp.svg' | relative_url }}" alt="">
+    <img class="sticker-img s8 soft tiny" style="top: 84%; right: 1.3%; transform: rotate(5deg);" src="{{ '/assets/stickers/tools/amazonwebservices-original-wordmark.svg' | relative_url }}" alt="">
+    <img class="sticker-img s5 soft tiny" style="top: 91%; right: 5.6%; transform: rotate(-2deg);" src="{{ '/assets/stickers/tools/amazonwebservices-plain-wordmark.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 soft tiny" style="top: 96%; right: 1.1%; transform: rotate(6deg);" src="{{ '/assets/stickers/tools/amazonwebservices-line-wordmark.svg' | relative_url }}" alt="">
+    <img class="sticker-img s7 soft tiny" style="top: 24%; right: 8.2%; transform: rotate(-6deg);" src="{{ '/assets/stickers/tools/bitwarden.svg' | relative_url }}" alt="">
   </div>
   <div class="site-shell">
     <header class="site-head">
