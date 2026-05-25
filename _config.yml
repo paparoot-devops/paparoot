@@ -1,5 +1,5 @@
 title: "DevOps Notes"
-description: "Linux, DevOps і кейси з продакшену: де спочатку болить, потім працює."
+description: "Linux, DevOps і практичні кейси — розбір польотів і падінь"
 theme: minima
 markdown: kramdown
 plugins:
