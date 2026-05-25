@@ -7,23 +7,28 @@
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
   <style>
     :root {
-      --bg: #eef2f6;
-      --surface: #f8fafc;
-      --card: #ffffff;
-      --line: #d9e2ec;
-      --line-strong: #c7d4e2;
-      --ink: #1f2a37;
-      --muted: #5f6c7b;
-      --brand: #0ea5e9;
-      --brand-soft: #e7f6fd;
-      --code-bg: #f3f6fa;
+      --bg: #1f2733;
+      --grid: rgba(148, 163, 184, 0.08);
+      --surface: #2a3442;
+      --card: #323d4d;
+      --line: #435167;
+      --line-strong: #54657f;
+      --ink: #e5edf8;
+      --muted: #b7c4d7;
+      --brand: #22d3ee;
+      --brand-soft: #0f2f3b;
+      --code-bg: #2a3342;
     }
 
     * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: linear-gradient(180deg, #f3f6fa 0%, #eaf0f6 100%);
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 28px 28px;
       color: var(--ink);
       font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
       line-height: 1.6;
@@ -36,11 +41,11 @@
       border: 1px solid var(--line);
       border-radius: 10px;
       overflow: hidden;
-      box-shadow: 0 6px 22px rgba(16, 24, 40, 0.05);
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.28);
     }
 
     .site-head {
-      background: #fff;
+      background: #101722;
       border-bottom: 1px solid var(--line);
       padding: 1.1rem 1.2rem 1rem;
     }
@@ -49,18 +54,15 @@
       margin: 0;
       font-size: 2.35rem;
       line-height: 1;
-      letter-spacing: 0.1px;
       font-weight: 700;
+      letter-spacing: 0.2px;
     }
 
-    .brand a {
-      text-decoration: none;
-      color: var(--ink);
-    }
+    .brand a { text-decoration: none; color: #f8fbff; }
 
     .subtitle {
       margin: 0.45rem 0 0;
-      color: var(--muted);
+      color: #9fb0c8;
       font-size: 1rem;
     }
 
@@ -69,7 +71,7 @@
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem 1rem;
-      background: #fff;
+      background: #172130;
       border-bottom: 2px solid var(--brand);
     }
 
@@ -77,19 +79,19 @@
 
     .nav a {
       text-decoration: none;
-      color: #3b4958;
+      color: #bdd0e8;
       padding: 0.45rem 0.75rem;
       border-radius: 6px;
       font-size: 0.88rem;
-      text-transform: uppercase;
-      letter-spacing: 0.25px;
+      text-transform: none;
+      letter-spacing: 0.15px;
       font-weight: 600;
     }
 
     .nav a:hover,
     .nav a.active {
       background: var(--brand-soft);
-      color: #0b4f6c;
+      color: #8be9fd;
     }
 
     .content-shell { padding: 1rem; }
@@ -101,15 +103,18 @@
       padding: 1.1rem 1.25rem;
     }
 
-    .article-card h1 { margin-top: 0; font-size: 2.05rem; line-height: 1.2; }
-    .article-card h2 { font-size: 1.65rem; margin-top: 1.55rem; }
-    .article-card h3 { font-size: 1.3rem; margin-top: 1.3rem; }
+    .article-card h1 { margin-top: 0; font-size: 2.05rem; line-height: 1.2; color: #f3f7ff; }
+    .article-card h2 { font-size: 1.65rem; margin-top: 1.55rem; color: #edf4ff; }
+    .article-card h3 { font-size: 1.3rem; margin-top: 1.3rem; color: #edf4ff; }
+    .article-card p, .article-card li { color: #d8e3f3; }
 
     .article-card code {
-      background: var(--code-bg);
-      border: 1px solid var(--line);
+      background: #223043;
+      border: 1px solid #3f526e;
       border-radius: 5px;
       padding: 0.08rem 0.3rem;
+      color: #bff7ff;
+      font-family: "IBM Plex Mono", "Consolas", monospace;
     }
 
     .article-card pre {
@@ -123,6 +128,7 @@
     .article-card pre code {
       border: 0;
       background: transparent;
+      color: #bde7ff;
       padding: 0;
     }
 
