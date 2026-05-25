@@ -1,13 +1,13 @@
 ---
 layout: default
-title: "О блоге"
+title: "Про блог"
 permalink: /about/
 ---
 
 <div class="content-shell">
   <article class="article-card">
-    <h1>О блоге</h1>
-    <p>Этот блог про практические DevOps-кейсы.</p>
+    <h1>Про блог</h1>
+    <p>Цей блог про практичні DevOps-кейси.</p>
     <ul>
       <li>Kubernetes</li>
       <li>Terraform</li>
@@ -15,6 +15,6 @@ permalink: /about/
       <li>Observability</li>
       <li>Security tooling</li>
     </ul>
-    <p>Фокус: короткие разборы инженерных задач с воспроизводимыми шагами, без чувствительных данных.</p>
+    <p>Фокус: короткі розбори інженерних задач з відтворюваними кроками, без чутливих даних.</p>
   </article>
 </div>

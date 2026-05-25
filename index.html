@@ -140,7 +140,7 @@ layout: default
         <div class="thumb" aria-hidden="true"></div>
         <div>
           <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 260 }}</p>
-          <a class="read-more" href="{{ post.url | relative_url }}">Читать дальше »</a>
+          <a class="read-more" href="{{ post.url | relative_url }}">Читати далі »</a>
         </div>
       </div>
       {% if post.tags and post.tags.size > 0 %}
@@ -154,20 +154,20 @@ layout: default
     <section class="sidebar-box">
       <h3 class="sidebar-title">Статистика</h3>
       <div class="sidebar-inner">
-        <div>Всего постов: <strong>{{ site.posts | size }}</strong></div>
+        <div>Усього постів: <strong>{{ site.posts | size }}</strong></div>
         <div>Featured: <strong>{{ site.posts | where: "featured", true | size }}</strong></div>
       </div>
     </section>
 
     <section class="sidebar-box" id="quick-search-box">
-      <h3 class="sidebar-title">Быстрый поиск</h3>
+      <h3 class="sidebar-title">Швидкий пошук</h3>
       <div class="sidebar-inner">
-        <input id="quick-search" class="search-input" type="text" placeholder="Поиск по заголовку, тексту и тегам">
+        <input id="quick-search" class="search-input" type="text" placeholder="Пошук за заголовком, текстом і тегами">
       </div>
     </section>
 
     <section class="sidebar-box">
-      <h3 class="sidebar-title">Последние кейсы</h3>
+      <h3 class="sidebar-title">Останні кейси</h3>
       <div class="sidebar-inner">
         <ul class="mini-list">
           {% for post in site.posts limit: 5 %}
