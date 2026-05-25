@@ -383,7 +383,11 @@
       </nav>
       <div class="lang-switch">
         <a class="lang-chip active" href="{{ page.url | relative_url }}" lang="uk">UA</a>
-        <a class="lang-chip" href="{{ '/en' | append: page.url | replace: '//', '/' | relative_url }}" lang="en">EN</a>
+        {% if page.url == '/about/' %}
+          <a class="lang-chip" href="{{ '/en/about/' | relative_url }}" lang="en">EN</a>
+        {% else %}
+          <a class="lang-chip" href="{{ '/en/' | relative_url }}" lang="en">EN</a>
+        {% endif %}
       </div>
     </div>
     {{ content }}
