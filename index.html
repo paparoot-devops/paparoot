@@ -42,6 +42,22 @@ body {
   margin: 0.4rem 0 0;
 }
 
+.stats {
+  margin-top: 0.9rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  background: #ecfeff;
+  color: #155e75;
+  border: 1px solid #a5f3fc;
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.9rem;
+}
+
 .carousel-wrap {
   position: relative;
   overflow: hidden;
@@ -145,15 +161,20 @@ body {
 }
 </style>
 
+{% assign featured_posts = site.posts | where: "featured", true %}
+
 <div class="showcase">
   <section class="hero">
     <h1>DevOps Cases</h1>
     <p>Практические кейсы по Kubernetes, Terraform, CI/CD, observability и security.</p>
+    <div class="stats">
+      <span class="badge">Всего постов: {{ site.posts | size }}</span>
+      <span class="badge">Featured: {{ featured_posts | size }}</span>
+    </div>
   </section>
 
   <section>
     <h2>Избранные кейсы</h2>
-    {% assign featured_posts = site.posts | where: "featured", true %}
     {% if featured_posts.size > 0 %}
       <div class="carousel-wrap">
         <div class="carousel" id="carousel">
