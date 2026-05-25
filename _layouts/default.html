@@ -49,8 +49,8 @@
 
     .icon-cell {
       position: absolute;
-      width: 56px;
-      height: 56px;
+      width: 62px;
+      height: 62px;
       opacity: 0.12;
       filter: saturate(0.95);
       transition: opacity 900ms ease;
@@ -277,24 +277,49 @@
         "{{ '/assets/stickers/memes/beer.svg' | relative_url }}"
       ];
 
-      var iconSize = 56;
+      var iconSize = 62;
       var sidePadding = 16;
-      var rowStep = 96;
+      var rowStep = 118;
       var yOffset = 10;
       var shell = document.querySelector(".site-shell");
       var rect = shell ? shell.getBoundingClientRect() : { left: window.innerWidth * 0.2, right: window.innerWidth * 0.8 };
       var leftZoneWidth = Math.max(0, Math.floor(rect.left) - sidePadding * 2);
       var rightZoneWidth = Math.max(0, Math.floor(window.innerWidth - rect.right) - sidePadding * 2);
       var rows = Math.ceil(window.innerHeight / rowStep) + 1;
-      var leftCols = Math.max(1, Math.floor(leftZoneWidth / 70));
-      var rightCols = Math.max(1, Math.floor(rightZoneWidth / 70));
+      var leftCols = Math.max(1, Math.floor(leftZoneWidth / 92));
+      var rightCols = Math.max(1, Math.floor(rightZoneWidth / 92));
       var allCells = [];
-      var iconIndex = 0;
+      var totalCells = rows * (leftCols + rightCols);
+      var iconQueue = [];
+
+      function shuffle(arr) {
+        for (var i = arr.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var t = arr[i];
+          arr[i] = arr[j];
+          arr[j] = t;
+        }
+      }
+
+      function buildIconQueue() {
+        var expanded = [];
+        for (var i = 0; i < icons.length; i++) {
+          var repeats = 1 + Math.floor(Math.random() * 3); // max 1-3 repeats per icon
+          for (var r = 0; r < repeats; r++) expanded.push(icons[i]);
+        }
+        shuffle(expanded);
+        if (expanded.length > totalCells) expanded = expanded.slice(0, totalCells);
+        return expanded;
+      }
+
+      iconQueue = buildIconQueue();
+      if (iconQueue.length === 0) return;
 
       function placeCell(x, y) {
+        if (iconQueue.length === 0) return;
         var img = document.createElement("img");
         img.className = "icon-cell";
-        img.src = icons[iconIndex % icons.length];
+        img.src = iconQueue.pop();
         img.alt = "";
         img.style.width = iconSize + "px";
         img.style.height = iconSize + "px";
@@ -302,7 +327,6 @@
         img.style.top = Math.round(y) + "px";
         container.appendChild(img);
         allCells.push(img);
-        iconIndex += 1;
       }
 
       var leftStart = sidePadding;
