@@ -3,54 +3,6 @@ layout: default
 ---
 
 <style>
-:root {
-  --bg: #e5e7eb;
-  --surface: #f8fafc;
-  --card: #ffffff;
-  --line: #d1d5db;
-  --ink: #1f2937;
-  --muted: #6b7280;
-  --brand: #0ea5e9;
-  --brand-dark: #0284c7;
-}
-
-body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
-}
-
-.wrapper {
-  max-width: 1080px;
-  margin: 1.5rem auto;
-  background: var(--surface);
-  border: 1px solid var(--line);
-}
-
-.topnav {
-  display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-  padding: 0.5rem;
-  border-bottom: 3px solid var(--brand);
-  background: #fff;
-}
-
-.topnav a {
-  text-decoration: none;
-  color: #374151;
-  padding: 0.55rem 0.85rem;
-  font-size: 0.92rem;
-  border-radius: 4px;
-}
-
-.topnav a.active,
-.topnav a:hover {
-  background: var(--brand);
-  color: #fff;
-}
-
 .content {
   display: grid;
   grid-template-columns: 2fr 1fr;
@@ -175,73 +127,66 @@ body {
 }
 </style>
 
-<div class="wrapper">
-  <nav class="topnav">
-    <a class="active" href="{{ '/' | relative_url }}">Главная</a>
-    <a href="{{ '/about/' | relative_url }}">О блоге</a>
-  </nav>
-
-  <div class="content">
-    <main class="main-col">
-      {% for post in site.posts %}
-      <article
-        class="post-card"
-        data-search="{{ post.title | downcase | escape }} {{ post.excerpt | strip_html | downcase | escape }} {{ post.tags | join: ' ' | downcase | escape }}"
-      >
-        <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
-        <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }}</div>
-        <div class="post-body">
-          <div class="thumb" aria-hidden="true"></div>
-          <div>
-            <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 260 }}</p>
-            <a class="read-more" href="{{ post.url | relative_url }}">Читать дальше »</a>
-          </div>
+<div class="content">
+  <main class="main-col">
+    {% for post in site.posts %}
+    <article
+      class="post-card"
+      data-search="{{ post.title | downcase | escape }} {{ post.excerpt | strip_html | downcase | escape }} {{ post.tags | join: ' ' | downcase | escape }}"
+    >
+      <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+      <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }}</div>
+      <div class="post-body">
+        <div class="thumb" aria-hidden="true"></div>
+        <div>
+          <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 260 }}</p>
+          <a class="read-more" href="{{ post.url | relative_url }}">Читать дальше »</a>
         </div>
-        {% if post.tags and post.tags.size > 0 %}
-        <div class="tags">Теги: {{ post.tags | join: ", " }}</div>
-        {% endif %}
-      </article>
-      {% endfor %}
-    </main>
+      </div>
+      {% if post.tags and post.tags.size > 0 %}
+      <div class="tags">Теги: {{ post.tags | join: ", " }}</div>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </main>
 
-    <aside class="side-col">
-      <section class="sidebar-box">
-        <h3 class="sidebar-title">Статистика</h3>
-        <div class="sidebar-inner">
-          <div>Всего постов: <strong>{{ site.posts | size }}</strong></div>
-          <div>Featured: <strong>{{ site.posts | where: "featured", true | size }}</strong></div>
-        </div>
-      </section>
+  <aside class="side-col">
+    <section class="sidebar-box">
+      <h3 class="sidebar-title">Статистика</h3>
+      <div class="sidebar-inner">
+        <div>Всего постов: <strong>{{ site.posts | size }}</strong></div>
+        <div>Featured: <strong>{{ site.posts | where: "featured", true | size }}</strong></div>
+      </div>
+    </section>
 
-      <section class="sidebar-box" id="quick-search-box">
-        <h3 class="sidebar-title">Быстрый поиск</h3>
-        <div class="sidebar-inner">
-          <input id="quick-search" class="search-input" type="text" placeholder="Поиск по заголовку, тексту и тегам">
-        </div>
-      </section>
+    <section class="sidebar-box" id="quick-search-box">
+      <h3 class="sidebar-title">Быстрый поиск</h3>
+      <div class="sidebar-inner">
+        <input id="quick-search" class="search-input" type="text" placeholder="Поиск по заголовку, тексту и тегам">
+      </div>
+    </section>
 
-      <section class="sidebar-box">
-        <h3 class="sidebar-title">Последние кейсы</h3>
-        <div class="sidebar-inner">
-          <ul class="mini-list">
-            {% for post in site.posts limit: 5 %}
-            <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
-            {% endfor %}
-          </ul>
-        </div>
-      </section>
-
-      <section class="sidebar-box">
-        <h3 class="sidebar-title">Теги</h3>
-        <div class="sidebar-inner">
-          {% assign tags = site.tags | sort %}
-          {% for tag in tags %}
-            <a class="badge" href="#quick-search-box">{{ tag[0] }}</a>
+    <section class="sidebar-box">
+      <h3 class="sidebar-title">Последние кейсы</h3>
+      <div class="sidebar-inner">
+        <ul class="mini-list">
+          {% for post in site.posts limit: 5 %}
+          <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
           {% endfor %}
-        </div>
-      </section>
-    </aside>
-  </div>
+        </ul>
+      </div>
+    </section>
+
+    <section class="sidebar-box">
+      <h3 class="sidebar-title">Теги</h3>
+      <div class="sidebar-inner">
+        {% assign tags = site.tags | sort %}
+        {% for tag in tags %}
+          <a class="badge" href="#quick-search-box">{{ tag[0] }}</a>
+        {% endfor %}
+      </div>
+    </section>
+  </aside>
 </div>
 
 <script>
