@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Symmetric DevOps infinity favicon">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="inf" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#22d3ee"/>
+      <stop offset="100%" stop-color="#0ea5e9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="12" fill="url(#bg)"/>
+
+  <path d="M32 10 L50 20 L50 44 L32 54 L14 44 L14 20 Z"
+        fill="none" stroke="#334155" stroke-width="2"/>
+
+  <path d="M16 32 C16 24 24 24 32 32 C40 40 48 40 48 32 C48 24 40 24 32 32 C24 40 16 40 16 32"
+        fill="none" stroke="url(#inf)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
