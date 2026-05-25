@@ -59,9 +59,7 @@ body {
 }
 
 .main-col,
-.side-col {
-  min-width: 0;
-}
+.side-col { min-width: 0; }
 
 .post-card {
   background: var(--card);
@@ -134,9 +132,7 @@ body {
   font-size: 1.05rem;
 }
 
-.sidebar-inner {
-  padding: 0.8rem;
-}
+.sidebar-inner { padding: 0.8rem; }
 
 .search-input {
   width: 100%;
@@ -182,7 +178,7 @@ body {
 <div class="wrapper">
   <nav class="topnav">
     <a class="active" href="{{ '/' | relative_url }}">Главная</a>
-    <a href="{{ '/search/' | relative_url }}">Поиск</a>
+    <a href="#quick-search-box" id="search-link">Поиск</a>
     <a href="{{ '/about/' | relative_url }}">О блоге</a>
   </nav>
 
@@ -215,7 +211,7 @@ body {
         </div>
       </section>
 
-      <section class="sidebar-box">
+      <section class="sidebar-box" id="quick-search-box">
         <h3 class="sidebar-title">Быстрый поиск</h3>
         <div class="sidebar-inner">
           <input id="quick-search" class="search-input" type="text" placeholder="Фильтр по заголовку">
@@ -238,7 +234,7 @@ body {
         <div class="sidebar-inner">
           {% assign tags = site.tags | sort %}
           {% for tag in tags %}
-            <a class="badge" href="{{ '/search/' | relative_url }}">{{ tag[0] }}</a>
+            <a class="badge" href="#quick-search-box">{{ tag[0] }}</a>
           {% endfor %}
         </div>
       </section>
@@ -255,9 +251,14 @@ body {
   input.addEventListener('input', function () {
     var q = (input.value || '').toLowerCase().trim();
     cards.forEach(function (card) {
-      var title = card.querySelector('h2')?.innerText.toLowerCase() || '';
+      var title = card.querySelector('h2') ? card.querySelector('h2').innerText.toLowerCase() : '';
       card.style.display = !q || title.indexOf(q) !== -1 ? '' : 'none';
     });
+  });
+
+  var searchLink = document.getElementById('search-link');
+  searchLink.addEventListener('click', function () {
+    setTimeout(function () { input.focus(); }, 150);
   });
 })();
 </script>
