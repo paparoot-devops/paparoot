@@ -51,12 +51,13 @@
       position: absolute;
       width: 62px;
       height: 62px;
-      opacity: 0.12;
-      filter: saturate(0.95);
+      opacity: 0.16;
+      filter: saturate(0.98);
       transition: opacity 900ms ease;
     }
 
     .icon-cell.pulse { opacity: 0.8; }
+    .icon-cell.dark { opacity: 0.26; filter: saturate(1.02) brightness(1.35); }
 
     .site-shell {
       max-width: 1120px;
@@ -317,14 +318,28 @@
 
       function placeCell(x, y) {
         if (iconQueue.length === 0) return;
+        var src = iconQueue.pop();
         var img = document.createElement("img");
         img.className = "icon-cell";
-        img.src = iconQueue.pop();
+        img.src = src;
         img.alt = "";
         img.style.width = iconSize + "px";
         img.style.height = iconSize + "px";
         img.style.left = Math.round(x) + "px";
         img.style.top = Math.round(y) + "px";
+        if (
+          src.indexOf("kubernetes.svg") !== -1 ||
+          src.indexOf("bitwarden.svg") !== -1 ||
+          src.indexOf("postgresql.svg") !== -1 ||
+          src.indexOf("github-actions.svg") !== -1 ||
+          src.indexOf("gitlab.svg") !== -1 ||
+          src.indexOf("terraform.svg") !== -1 ||
+          src.indexOf("proxmox.svg") !== -1 ||
+          src.indexOf("newrelic.svg") !== -1 ||
+          src.indexOf("mysql.svg") !== -1
+        ) {
+          img.classList.add("dark");
+        }
         container.appendChild(img);
         allCells.push(img);
       }
