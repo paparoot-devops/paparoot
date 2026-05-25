@@ -4,238 +4,260 @@ layout: default
 
 <style>
 :root {
-  --bg: #f3f4f6;
+  --bg: #e5e7eb;
+  --surface: #f8fafc;
   --card: #ffffff;
-  --ink: #111827;
+  --line: #d1d5db;
+  --ink: #1f2937;
   --muted: #6b7280;
-  --line: #e5e7eb;
-  --accent: #0f766e;
-  --accent-2: #115e59;
+  --brand: #0ea5e9;
+  --brand-dark: #0284c7;
 }
 
 body {
-  background:
-    radial-gradient(circle at 10% 10%, #dbeafe 0, transparent 28%),
-    radial-gradient(circle at 90% 0%, #ccfbf1 0, transparent 24%),
-    var(--bg);
+  margin: 0;
+  background: var(--bg);
   color: var(--ink);
   font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
 }
 
-.showcase {
-  max-width: 980px;
-  margin: 2rem auto 3rem;
-  padding: 0 1rem;
+.wrapper {
+  max-width: 1080px;
+  margin: 1.5rem auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
 }
 
-.hero {
+.topnav {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding: 0.5rem;
+  border-bottom: 3px solid var(--brand);
+  background: #fff;
+}
+
+.topnav a {
+  text-decoration: none;
+  color: #374151;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.92rem;
+  border-radius: 4px;
+}
+
+.topnav a.active,
+.topnav a:hover {
+  background: var(--brand);
+  color: #fff;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.main-col,
+.side-col {
+  min-width: 0;
+}
+
+.post-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 1rem;
   margin-bottom: 1rem;
 }
 
-.hero h1 {
-  margin: 0;
-  font-size: 2rem;
+.post-card h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.8rem;
+  line-height: 1.2;
 }
 
-.hero p {
-  color: var(--muted);
-  margin: 0.4rem 0 0;
+.post-card h2 a {
+  text-decoration: none;
+  color: var(--ink);
 }
 
-.stats {
-  margin-top: 0.9rem;
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
-}
-
-.badge {
-  background: #ecfeff;
-  color: #155e75;
-  border: 1px solid #a5f3fc;
-  border-radius: 999px;
-  padding: 0.3rem 0.7rem;
-  font-size: 0.9rem;
-}
-
-.carousel-wrap {
-  position: relative;
-  overflow: hidden;
-  border-radius: 16px;
-  border: 1px solid var(--line);
-  background: var(--card);
-}
-
-.carousel {
-  display: flex;
-  transition: transform 0.35s ease;
-}
-
-.slide {
-  min-width: 100%;
-  box-sizing: border-box;
-  padding: 1.25rem;
-}
-
-.slide-card {
-  border-radius: 12px;
-  padding: 1.2rem;
-  background: linear-gradient(140deg, #ffffff, #f0fdfa);
-  border: 1px solid var(--line);
-}
-
-.slide time {
+.post-meta {
   color: var(--muted);
   font-size: 0.92rem;
+  margin-bottom: 0.8rem;
 }
 
-.slide h3 {
-  margin: 0.6rem 0;
-  font-size: 1.45rem;
+.post-body {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 0.9rem;
+  align-items: start;
 }
 
-.slide p {
-  margin: 0.5rem 0 1rem;
+.thumb {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #e0f2fe, #bae6fd);
+  border: 1px solid #7dd3fc;
+}
+
+.post-excerpt {
+  margin: 0;
   color: #374151;
+  line-height: 1.55;
 }
 
 .read-more {
-  display: inline-block;
   text-decoration: none;
-  color: #fff;
-  background: var(--accent);
-  padding: 0.5rem 0.9rem;
-  border-radius: 8px;
-}
-
-.read-more:hover { background: var(--accent-2); }
-
-.nav {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: flex-end;
-  margin-top: 0.75rem;
-}
-
-.nav button {
-  border: 1px solid var(--line);
-  background: #fff;
-  border-radius: 8px;
-  padding: 0.3rem 0.65rem;
-  cursor: pointer;
-}
-
-.posts {
-  margin-top: 2rem;
-}
-
-.post-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 0.9rem;
-}
-
-.post-item {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 0.9rem;
-}
-
-.post-item a {
-  text-decoration: none;
-  color: var(--ink);
+  color: var(--brand-dark);
   font-weight: 600;
 }
 
-.post-item time {
-  display: block;
+.tags {
+  margin-top: 0.9rem;
+  font-size: 0.92rem;
   color: var(--muted);
-  font-size: 0.85rem;
-  margin-top: 0.4rem;
 }
 
-@media (max-width: 640px) {
-  .hero h1 { font-size: 1.6rem; }
-  .slide h3 { font-size: 1.2rem; }
+.sidebar-box {
+  background: var(--card);
+  border: 1px solid var(--line);
+  margin-bottom: 0.8rem;
+}
+
+.sidebar-title {
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border-bottom: 1px solid var(--line);
+  background: #f3f4f6;
+  font-size: 1.05rem;
+}
+
+.sidebar-inner {
+  padding: 0.8rem;
+}
+
+.search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.mini-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mini-list li { margin-bottom: 0.5rem; }
+
+.mini-list a {
+  text-decoration: none;
+  color: #0f172a;
+}
+
+.badge {
+  display: inline-block;
+  margin-right: 0.35rem;
+  margin-bottom: 0.4rem;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.82rem;
+  color: #0c4a6e;
+  background: #ecfeff;
+  border: 1px solid #a5f3fc;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+@media (max-width: 860px) {
+  .content { grid-template-columns: 1fr; }
+  .post-body { grid-template-columns: 1fr; }
+  .thumb { width: 100%; height: 140px; }
 }
 </style>
 
-{% assign featured_posts = site.posts | where: "featured", true %}
+<div class="wrapper">
+  <nav class="topnav">
+    <a class="active" href="{{ '/' | relative_url }}">Главная</a>
+    <a href="{{ '/search/' | relative_url }}">Поиск</a>
+    <a href="{{ '/about/' | relative_url }}">О блоге</a>
+  </nav>
 
-<div class="showcase">
-  <section class="hero">
-    <h1>DevOps Cases</h1>
-    <p>Практические кейсы по Kubernetes, Terraform, CI/CD, observability и security.</p>
-    <div class="stats">
-      <span class="badge">Всего постов: {{ site.posts | size }}</span>
-      <span class="badge">Featured: {{ featured_posts | size }}</span>
-    </div>
-  </section>
+  <div class="content">
+    <main class="main-col">
+      {% for post in site.posts %}
+      <article class="post-card">
+        <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+        <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }}</div>
+        <div class="post-body">
+          <div class="thumb" aria-hidden="true"></div>
+          <div>
+            <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 260 }}</p>
+            <a class="read-more" href="{{ post.url | relative_url }}">Читать дальше »</a>
+          </div>
+        </div>
+        {% if post.tags and post.tags.size > 0 %}
+        <div class="tags">Теги: {{ post.tags | join: ", " }}</div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </main>
 
-  <section>
-    <h2>Избранные кейсы</h2>
-    {% if featured_posts.size > 0 %}
-      <div class="carousel-wrap">
-        <div class="carousel" id="carousel">
-          {% for post in featured_posts %}
-            <article class="slide">
-              <div class="slide-card">
-                <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
-                <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
-                <p>{{ post.excerpt | strip_html | truncate: 170 }}</p>
-                <a class="read-more" href="{{ post.url | relative_url }}">Читать кейс</a>
-              </div>
-            </article>
+    <aside class="side-col">
+      <section class="sidebar-box">
+        <h3 class="sidebar-title">Статистика</h3>
+        <div class="sidebar-inner">
+          <div>Всего постов: <strong>{{ site.posts | size }}</strong></div>
+          <div>Featured: <strong>{{ site.posts | where: "featured", true | size }}</strong></div>
+        </div>
+      </section>
+
+      <section class="sidebar-box">
+        <h3 class="sidebar-title">Быстрый поиск</h3>
+        <div class="sidebar-inner">
+          <input id="quick-search" class="search-input" type="text" placeholder="Фильтр по заголовку">
+        </div>
+      </section>
+
+      <section class="sidebar-box">
+        <h3 class="sidebar-title">Последние кейсы</h3>
+        <div class="sidebar-inner">
+          <ul class="mini-list">
+            {% for post in site.posts limit: 5 %}
+            <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      </section>
+
+      <section class="sidebar-box">
+        <h3 class="sidebar-title">Теги</h3>
+        <div class="sidebar-inner">
+          {% assign tags = site.tags | sort %}
+          {% for tag in tags %}
+            <a class="badge" href="{{ '/search/' | relative_url }}">{{ tag[0] }}</a>
           {% endfor %}
         </div>
-      </div>
-      <div class="nav">
-        <button id="prev" aria-label="Предыдущий слайд">←</button>
-        <button id="next" aria-label="Следующий слайд">→</button>
-      </div>
-    {% else %}
-      <p>Пока нет featured-постов. Добавь в front matter: <code>featured: true</code>.</p>
-    {% endif %}
-  </section>
-
-  <section class="posts">
-    <h2>Все статьи</h2>
-    <div class="post-grid">
-      {% for post in site.posts %}
-        <article class="post-item">
-          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
-        </article>
-      {% endfor %}
-    </div>
-  </section>
+      </section>
+    </aside>
+  </div>
 </div>
 
 <script>
 (function () {
-  var track = document.getElementById('carousel');
-  if (!track) return;
-  var slides = track.children;
-  var index = 0;
+  var input = document.getElementById('quick-search');
+  if (!input) return;
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.post-card'));
 
-  function render() {
-    track.style.transform = 'translateX(' + (-index * 100) + '%)';
-  }
-
-  function next() {
-    index = (index + 1) % slides.length;
-    render();
-  }
-
-  function prev() {
-    index = (index - 1 + slides.length) % slides.length;
-    render();
-  }
-
-  document.getElementById('next').addEventListener('click', next);
-  document.getElementById('prev').addEventListener('click', prev);
-
-  setInterval(next, 5000);
+  input.addEventListener('input', function () {
+    var q = (input.value || '').toLowerCase().trim();
+    cards.forEach(function (card) {
+      var title = card.querySelector('h2')?.innerText.toLowerCase() || '';
+      card.style.display = !q || title.indexOf(q) !== -1 ? '' : 'none';
+    });
+  });
 })();
 </script>
