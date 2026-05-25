@@ -290,10 +290,11 @@
       ];
 
       var iconSize = 44;
-      var shellWidth = 1120;
       var sidePadding = 18;
-      var centerLeft = Math.max(0, (window.innerWidth - shellWidth) / 2);
-      var centerRight = window.innerWidth - centerLeft;
+      var shell = document.querySelector(".site-shell");
+      var rect = shell ? shell.getBoundingClientRect() : { left: window.innerWidth * 0.2, right: window.innerWidth * 0.8 };
+      var centerLeft = Math.max(0, rect.left);
+      var centerRight = Math.min(window.innerWidth, rect.right);
       var leftZoneMin = sidePadding;
       var leftZoneMax = Math.max(sidePadding, centerLeft - iconSize - sidePadding);
       var rightZoneMin = Math.min(window.innerWidth - iconSize - sidePadding, centerRight + sidePadding);
@@ -310,12 +311,20 @@
 
         var useLeftSide = (i % 2 === 0);
         var x;
-        if (leftZoneMax <= leftZoneMin || rightZoneMax <= rightZoneMin) {
-          x = Math.random() * (window.innerWidth - iconSize - sidePadding * 2) + sidePadding;
+        if (leftZoneMax <= leftZoneMin && rightZoneMax <= rightZoneMin) {
+          continue;
         } else if (useLeftSide) {
-          x = Math.random() * (leftZoneMax - leftZoneMin) + leftZoneMin;
+          if (leftZoneMax <= leftZoneMin) {
+            x = Math.random() * (rightZoneMax - rightZoneMin) + rightZoneMin;
+          } else {
+            x = Math.random() * (leftZoneMax - leftZoneMin) + leftZoneMin;
+          }
         } else {
-          x = Math.random() * (rightZoneMax - rightZoneMin) + rightZoneMin;
+          if (rightZoneMax <= rightZoneMin) {
+            x = Math.random() * (leftZoneMax - leftZoneMin) + leftZoneMin;
+          } else {
+            x = Math.random() * (rightZoneMax - rightZoneMin) + rightZoneMin;
+          }
         }
 
         img.style.left = x.toFixed(0) + "px";
