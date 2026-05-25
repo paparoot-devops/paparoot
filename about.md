@@ -59,23 +59,4 @@ permalink: /about/
       <p>Усі приклади подаються у знеособленому вигляді: без секретів, реальних доменів і внутрішніх ідентифікаторів.</p>
     </article>
   </section>
-
-  <aside>
-    <section class="about-side-box">
-      <h3 class="about-side-title">Формати кейсів</h3>
-      <div class="about-side-inner">
-        <ul class="about-list">
-          <li><code>change-case</code> для змін у вже існуючій системі</li>
-          <li><code>migration</code> для поетапних переносів і рефакторингу</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="about-side-box">
-      <h3 class="about-side-title">Навігація</h3>
-      <div class="about-side-inner">
-        <p><a href="{{ '/' | relative_url }}">Перейти до стрічки кейсів</a></p>
-      </div>
-    </section>
-  </aside>
 </div>
