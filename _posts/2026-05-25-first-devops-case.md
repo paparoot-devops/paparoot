@@ -4,6 +4,7 @@ title: "Тестовый кейс: стабилизация Trivy Operator в sa
 date: 2026-05-25 10:00:00 +0200
 categories: [devops]
 tags: [kubernetes, security, trivy-operator]
+featured: true
 ---
 
 > Эта статья намеренно обезличена: без secrets, реальных доменов, имен кластеров и внутренних идентификаторов.

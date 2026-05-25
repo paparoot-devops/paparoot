@@ -1,0 +1,220 @@
+---
+layout: default
+---
+
+<style>
+:root {
+  --bg: #f3f4f6;
+  --card: #ffffff;
+  --ink: #111827;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --accent: #0f766e;
+  --accent-2: #115e59;
+}
+
+body {
+  background:
+    radial-gradient(circle at 10% 10%, #dbeafe 0, transparent 28%),
+    radial-gradient(circle at 90% 0%, #ccfbf1 0, transparent 24%),
+    var(--bg);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+.showcase {
+  max-width: 980px;
+  margin: 2rem auto 3rem;
+  padding: 0 1rem;
+}
+
+.hero {
+  margin-bottom: 1rem;
+}
+
+.hero h1 {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.hero p {
+  color: var(--muted);
+  margin: 0.4rem 0 0;
+}
+
+.carousel-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+.carousel {
+  display: flex;
+  transition: transform 0.35s ease;
+}
+
+.slide {
+  min-width: 100%;
+  box-sizing: border-box;
+  padding: 1.25rem;
+}
+
+.slide-card {
+  border-radius: 12px;
+  padding: 1.2rem;
+  background: linear-gradient(140deg, #ffffff, #f0fdfa);
+  border: 1px solid var(--line);
+}
+
+.slide time {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.slide h3 {
+  margin: 0.6rem 0;
+  font-size: 1.45rem;
+}
+
+.slide p {
+  margin: 0.5rem 0 1rem;
+  color: #374151;
+}
+
+.read-more {
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  background: var(--accent);
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+}
+
+.read-more:hover { background: var(--accent-2); }
+
+.nav {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.75rem;
+}
+
+.nav button {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 8px;
+  padding: 0.3rem 0.65rem;
+  cursor: pointer;
+}
+
+.posts {
+  margin-top: 2rem;
+}
+
+.post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.9rem;
+}
+
+.post-item {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.9rem;
+}
+
+.post-item a {
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.post-item time {
+  display: block;
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 0.4rem;
+}
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 1.6rem; }
+  .slide h3 { font-size: 1.2rem; }
+}
+</style>
+
+<div class="showcase">
+  <section class="hero">
+    <h1>DevOps Cases</h1>
+    <p>Практические кейсы по Kubernetes, Terraform, CI/CD, observability и security.</p>
+  </section>
+
+  <section>
+    <h2>Избранные кейсы</h2>
+    {% assign featured_posts = site.posts | where: "featured", true %}
+    {% if featured_posts.size > 0 %}
+      <div class="carousel-wrap">
+        <div class="carousel" id="carousel">
+          {% for post in featured_posts %}
+            <article class="slide">
+              <div class="slide-card">
+                <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+                <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+                <p>{{ post.excerpt | strip_html | truncate: 170 }}</p>
+                <a class="read-more" href="{{ post.url | relative_url }}">Читать кейс</a>
+              </div>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="nav">
+        <button id="prev" aria-label="Предыдущий слайд">←</button>
+        <button id="next" aria-label="Следующий слайд">→</button>
+      </div>
+    {% else %}
+      <p>Пока нет featured-постов. Добавь в front matter: <code>featured: true</code>.</p>
+    {% endif %}
+  </section>
+
+  <section class="posts">
+    <h2>Все статьи</h2>
+    <div class="post-grid">
+      {% for post in site.posts %}
+        <article class="post-item">
+          <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+        </article>
+      {% endfor %}
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var track = document.getElementById('carousel');
+  if (!track) return;
+  var slides = track.children;
+  var index = 0;
+
+  function render() {
+    track.style.transform = 'translateX(' + (-index * 100) + '%)';
+  }
+
+  function next() {
+    index = (index + 1) % slides.length;
+    render();
+  }
+
+  function prev() {
+    index = (index - 1 + slides.length) % slides.length;
+    render();
+  }
+
+  document.getElementById('next').addEventListener('click', next);
+  document.getElementById('prev').addEventListener('click', prev);
+
+  setInterval(next, 5000);
+})();
+</script>
