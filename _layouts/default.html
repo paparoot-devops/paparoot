@@ -86,11 +86,17 @@
       overflow: hidden;
     }
 
-    .header-badge {
+    .header-icons {
       position: absolute;
       top: 10px;
       right: 12px;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-icon {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -99,6 +105,9 @@
       border-radius: 8px;
       border: 1px solid rgba(151, 181, 217, 0.35);
       background: rgba(24, 35, 54, 0.75);
+    }
+
+    .header-badge {
       cursor: pointer;
       user-select: none;
       transition: transform 140ms ease, border-color 140ms ease;
@@ -109,7 +118,7 @@
       border-color: rgba(139, 233, 253, 0.65);
     }
 
-    .header-badge img {
+    .header-icon img {
       width: 28px;
       height: 28px;
       object-fit: contain;
@@ -120,10 +129,10 @@
     .header-badge-beer {
       position: absolute;
       top: 10px;
-      right: 52px;
+      right: 12px;
       z-index: 2;
-      width: 34px;
-      height: 34px;
+      width: 40px;
+      height: 40px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -142,8 +151,8 @@
     }
 
     .header-badge-beer img {
-      width: 22px;
-      height: 22px;
+      width: 28px;
+      height: 28px;
       object-fit: contain;
     }
 
@@ -263,9 +272,16 @@
 <body>
   <div class="site-shell">
     <header class="site-head">
-      <button class="header-badge" id="linux-easter-trigger" type="button" aria-label="Linux badge">
-        <img src="{{ '/assets/stickers/tools/linux.svg' | relative_url }}" alt="">
-      </button>
+      <div class="header-icons" aria-hidden="true">
+        <span class="header-icon"><img src="{{ '/assets/stickers/tools/amazonwebservices-plain-wordmark.svg' | relative_url }}" alt=""></span>
+        <span class="header-icon"><img src="{{ '/assets/stickers/tools/ansible.svg' | relative_url }}" alt=""></span>
+        <span class="header-icon"><img src="{{ '/assets/stickers/tools/terraform.svg' | relative_url }}" alt=""></span>
+        <span class="header-icon"><img src="{{ '/assets/stickers/tools/kubernetes.svg' | relative_url }}" alt=""></span>
+        <span class="header-icon"><img src="{{ '/assets/stickers/tools/helm.svg' | relative_url }}" alt=""></span>
+        <button class="header-icon header-badge" id="linux-easter-trigger" type="button" aria-label="Linux badge">
+          <img src="{{ '/assets/stickers/tools/linux.svg' | relative_url }}" alt="">
+        </button>
+      </div>
       <div class="header-badge-beer" id="beer-easter-egg" aria-hidden="true">
         <img src="{{ '/assets/stickers/memes/beer.svg' | relative_url }}" alt="">
       </div>
