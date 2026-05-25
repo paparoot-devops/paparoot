@@ -1,0 +1,6 @@
+title: "DevOps Cases"
+description: "Практические кейсы из DevOps практики"
+theme: minima
+markdown: kramdown
+plugins:
+  - jekyll-feed
