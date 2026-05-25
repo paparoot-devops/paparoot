@@ -1,5 +1,5 @@
-title: "Ops Notes"
-description: "Linux, DevOps та системна інженерія. Кейси, розбори й інженерні нотатки."
+title: "DevOps Notes"
+description: "Linux, DevOps і кейси з продакшену: де спочатку болить, потім працює."
 theme: minima
 markdown: kramdown
 plugins:
