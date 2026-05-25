@@ -178,14 +178,16 @@ body {
 <div class="wrapper">
   <nav class="topnav">
     <a class="active" href="{{ '/' | relative_url }}">Главная</a>
-    <a href="#quick-search-box" id="search-link">Поиск</a>
     <a href="{{ '/about/' | relative_url }}">О блоге</a>
   </nav>
 
   <div class="content">
     <main class="main-col">
       {% for post in site.posts %}
-      <article class="post-card">
+      <article
+        class="post-card"
+        data-search="{{ post.title | downcase | escape }} {{ post.excerpt | strip_html | downcase | escape }} {{ post.tags | join: ' ' | downcase | escape }}"
+      >
         <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
         <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }}</div>
         <div class="post-body">
@@ -214,7 +216,7 @@ body {
       <section class="sidebar-box" id="quick-search-box">
         <h3 class="sidebar-title">Быстрый поиск</h3>
         <div class="sidebar-inner">
-          <input id="quick-search" class="search-input" type="text" placeholder="Фильтр по заголовку">
+          <input id="quick-search" class="search-input" type="text" placeholder="Поиск по заголовку, тексту и тегам">
         </div>
       </section>
 
@@ -251,14 +253,9 @@ body {
   input.addEventListener('input', function () {
     var q = (input.value || '').toLowerCase().trim();
     cards.forEach(function (card) {
-      var title = card.querySelector('h2') ? card.querySelector('h2').innerText.toLowerCase() : '';
-      card.style.display = !q || title.indexOf(q) !== -1 ? '' : 'none';
+      var hay = (card.getAttribute('data-search') || '').toLowerCase();
+      card.style.display = !q || hay.indexOf(q) !== -1 ? '' : 'none';
     });
-  });
-
-  var searchLink = document.getElementById('search-link');
-  searchLink.addEventListener('click', function () {
-    setTimeout(function () { input.focus(); }, 150);
   });
 })();
 </script>
