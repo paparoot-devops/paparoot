@@ -39,7 +39,7 @@
       overflow-x: hidden;
     }
 
-    .falling-icons {
+    .icon-grid {
       position: fixed;
       inset: 0;
       pointer-events: none;
@@ -47,23 +47,16 @@
       overflow: hidden;
     }
 
-    .falling-icon {
+    .icon-cell {
       position: absolute;
-      top: -12vh;
       width: 44px;
       height: 44px;
-      opacity: 0.16;
+      opacity: 0.12;
       filter: saturate(0.95);
-      animation-name: icon-fall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      will-change: transform;
+      transition: opacity 900ms ease;
     }
 
-    @keyframes icon-fall {
-      0% { transform: translate3d(0, -12vh, 0) rotate(0deg); }
-      100% { transform: translate3d(0, 120vh, 0) rotate(12deg); }
-    }
+    .icon-cell.pulse { opacity: 0.8; }
 
     .site-shell {
       max-width: 1120px;
@@ -221,12 +214,12 @@
       .brand { font-size: 1.9rem; }
       .subtitle { font-size: 0.94rem; }
       .article-card h1 { font-size: 1.75rem; }
-      .falling-icons { display: none; }
+      .icon-grid { display: none; }
     }
   </style>
 </head>
 <body>
-  <div class="falling-icons" id="falling-icons" aria-hidden="true"></div>
+  <div class="icon-grid" id="icon-grid" aria-hidden="true"></div>
   <div class="site-shell">
     <header class="site-head">
       <h1 class="brand"><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
@@ -242,7 +235,7 @@
   </div>
   <script>
     (function () {
-      var container = document.getElementById("falling-icons");
+      var container = document.getElementById("icon-grid");
       if (!container) return;
 
       var icons = [
@@ -290,49 +283,76 @@
       ];
 
       var iconSize = 44;
-      var sidePadding = 18;
+      var sidePadding = 16;
+      var rowStep = 76;
+      var yOffset = 10;
       var shell = document.querySelector(".site-shell");
       var rect = shell ? shell.getBoundingClientRect() : { left: window.innerWidth * 0.2, right: window.innerWidth * 0.8 };
-      var centerLeft = Math.max(0, rect.left);
-      var centerRight = Math.min(window.innerWidth, rect.right);
-      var leftZoneMin = sidePadding;
-      var leftZoneMax = Math.max(sidePadding, centerLeft - iconSize - sidePadding);
-      var rightZoneMin = Math.min(window.innerWidth - iconSize - sidePadding, centerRight + sidePadding);
-      var rightZoneMax = window.innerWidth - iconSize - sidePadding;
+      var leftZoneWidth = Math.max(0, Math.floor(rect.left) - sidePadding * 2);
+      var rightZoneWidth = Math.max(0, Math.floor(window.innerWidth - rect.right) - sidePadding * 2);
+      var rows = Math.ceil(window.innerHeight / rowStep) + 1;
+      var leftCols = Math.max(1, Math.floor(leftZoneWidth / 70));
+      var rightCols = Math.max(1, Math.floor(rightZoneWidth / 70));
+      var allCells = [];
+      var iconIndex = 0;
 
-      var count = 24;
-      for (var i = 0; i < count; i++) {
+      function placeCell(x, y) {
         var img = document.createElement("img");
-        img.className = "falling-icon";
-        img.src = icons[i % icons.length];
+        img.className = "icon-cell";
+        img.src = icons[iconIndex % icons.length];
         img.alt = "";
         img.style.width = iconSize + "px";
         img.style.height = iconSize + "px";
-
-        var useLeftSide = (i % 2 === 0);
-        var x;
-        if (leftZoneMax <= leftZoneMin && rightZoneMax <= rightZoneMin) {
-          continue;
-        } else if (useLeftSide) {
-          if (leftZoneMax <= leftZoneMin) {
-            x = Math.random() * (rightZoneMax - rightZoneMin) + rightZoneMin;
-          } else {
-            x = Math.random() * (leftZoneMax - leftZoneMin) + leftZoneMin;
-          }
-        } else {
-          if (rightZoneMax <= rightZoneMin) {
-            x = Math.random() * (leftZoneMax - leftZoneMin) + leftZoneMin;
-          } else {
-            x = Math.random() * (rightZoneMax - rightZoneMin) + rightZoneMin;
-          }
-        }
-
-        img.style.left = x.toFixed(0) + "px";
-        img.style.opacity = (0.1 + Math.random() * 0.12).toFixed(2);
-        img.style.animationDuration = (26 + Math.random() * 22).toFixed(1) + "s";
-        img.style.animationDelay = (-Math.random() * 40).toFixed(1) + "s";
+        img.style.left = Math.round(x) + "px";
+        img.style.top = Math.round(y) + "px";
         container.appendChild(img);
+        allCells.push(img);
+        iconIndex += 1;
       }
+
+      var leftStart = sidePadding;
+      var leftSpan = Math.max(1, leftZoneWidth - iconSize);
+      var leftColStep = leftCols > 1 ? leftSpan / (leftCols - 1) : 0;
+      for (var r1 = 0; r1 < rows; r1++) {
+        var y1 = yOffset + r1 * rowStep;
+        for (var c1 = 0; c1 < leftCols; c1++) {
+          var x1 = leftStart + c1 * leftColStep + (r1 % 2 ? 8 : -8);
+          placeCell(x1, y1);
+        }
+      }
+
+      var rightStart = Math.floor(rect.right) + sidePadding;
+      var rightSpan = Math.max(1, rightZoneWidth - iconSize);
+      var rightColStep = rightCols > 1 ? rightSpan / (rightCols - 1) : 0;
+      for (var r2 = 0; r2 < rows; r2++) {
+        var y2 = yOffset + r2 * rowStep;
+        for (var c2 = 0; c2 < rightCols; c2++) {
+          var x2 = rightStart + c2 * rightColStep + (r2 % 2 ? -8 : 8);
+          placeCell(x2, y2);
+        }
+      }
+
+      function pickRandomCells() {
+        var targetCount = 3 + Math.floor(Math.random() * 3);
+        var selected = [];
+        for (var i = 0; i < targetCount && allCells.length > 0; i++) {
+          var idx = Math.floor(Math.random() * allCells.length);
+          var el = allCells[idx];
+          if (selected.indexOf(el) === -1) selected.push(el);
+        }
+        return selected;
+      }
+
+      function pulse() {
+        var current = pickRandomCells();
+        for (var i = 0; i < current.length; i++) current[i].classList.add("pulse");
+        setTimeout(function () {
+          for (var j = 0; j < current.length; j++) current[j].classList.remove("pulse");
+        }, 1100);
+      }
+
+      pulse();
+      setInterval(pulse, 2600);
     })();
   </script>
 </body>
