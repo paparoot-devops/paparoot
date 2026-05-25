@@ -5,7 +5,7 @@ layout: default
 <style>
 .content {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 0.9fr);
   gap: 1rem;
   padding: 1rem;
 }
@@ -16,13 +16,14 @@ layout: default
 .post-card {
   background: var(--card);
   border: 1px solid var(--line);
+  border-radius: 10px;
   padding: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 0.95rem;
 }
 
 .post-card h2 {
-  margin: 0 0 0.4rem;
-  font-size: 1.8rem;
+  margin: 0 0 0.35rem;
+  font-size: 1.75rem;
   line-height: 1.2;
 }
 
@@ -33,65 +34,67 @@ layout: default
 
 .post-meta {
   color: var(--muted);
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   margin-bottom: 0.8rem;
 }
 
 .post-body {
   display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 0.9rem;
+  grid-template-columns: 108px 1fr;
+  gap: 0.85rem;
   align-items: start;
 }
 
 .thumb {
-  width: 120px;
-  height: 120px;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #e0f2fe, #bae6fd);
-  border: 1px solid #7dd3fc;
+  width: 108px;
+  height: 108px;
+  border-radius: 10px;
+  background: linear-gradient(145deg, #eff8ff, #dbeefe);
+  border: 1px solid #bfdbfe;
 }
 
 .post-excerpt {
   margin: 0;
-  color: #374151;
+  color: #31404f;
   line-height: 1.55;
 }
 
 .read-more {
   text-decoration: none;
-  color: var(--brand-dark);
+  color: #0b5f87;
   font-weight: 600;
 }
 
 .tags {
-  margin-top: 0.9rem;
-  font-size: 0.92rem;
+  margin-top: 0.85rem;
+  font-size: 0.88rem;
   color: var(--muted);
 }
 
 .sidebar-box {
   background: var(--card);
   border: 1px solid var(--line);
-  margin-bottom: 0.8rem;
+  border-radius: 10px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
 }
 
 .sidebar-title {
   margin: 0;
-  padding: 0.65rem 0.8rem;
+  padding: 0.62rem 0.78rem;
   border-bottom: 1px solid var(--line);
-  background: #f3f4f6;
-  font-size: 1.05rem;
+  background: #f6f9fc;
+  font-size: 1rem;
 }
 
-.sidebar-inner { padding: 0.8rem; }
+.sidebar-inner { padding: 0.72rem 0.78rem; }
 
 .search-input {
   width: 100%;
   box-sizing: border-box;
-  padding: 0.55rem 0.65rem;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  padding: 0.52rem 0.62rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 7px;
 }
 
 .mini-list {
@@ -100,30 +103,30 @@ layout: default
   margin: 0;
 }
 
-.mini-list li { margin-bottom: 0.5rem; }
+.mini-list li { margin-bottom: 0.48rem; }
 
 .mini-list a {
   text-decoration: none;
-  color: #0f172a;
+  color: #1d2a39;
 }
 
 .badge {
   display: inline-block;
-  margin-right: 0.35rem;
-  margin-bottom: 0.4rem;
-  padding: 0.2rem 0.5rem;
-  font-size: 0.82rem;
-  color: #0c4a6e;
+  margin-right: 0.3rem;
+  margin-bottom: 0.36rem;
+  padding: 0.16rem 0.46rem;
+  font-size: 0.79rem;
+  color: #155e75;
   background: #ecfeff;
-  border: 1px solid #a5f3fc;
+  border: 1px solid #bae6fd;
   border-radius: 999px;
   text-decoration: none;
 }
 
-@media (max-width: 860px) {
+@media (max-width: 900px) {
   .content { grid-template-columns: 1fr; }
   .post-body { grid-template-columns: 1fr; }
-  .thumb { width: 100%; height: 140px; }
+  .thumb { width: 100%; height: 128px; }
 }
 </style>
 
@@ -139,7 +142,7 @@ layout: default
       <div class="post-body">
         <div class="thumb" aria-hidden="true"></div>
         <div>
-          <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 260 }}</p>
+          <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 250 }}</p>
           <a class="read-more" href="{{ post.url | relative_url }}">Читати далі »</a>
         </div>
       </div>
