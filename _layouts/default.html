@@ -46,22 +46,6 @@
       z-index: 0;
     }
 
-    .sticker {
-      position: absolute;
-      padding: 0.24rem 0.56rem;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      letter-spacing: 0.2px;
-      color: #cfe8ff;
-      border: 1px solid rgba(151, 187, 224, 0.26);
-      background: rgba(20, 38, 59, 0.34);
-      backdrop-filter: blur(1px);
-      opacity: 0.24;
-      font-family: "IBM Plex Mono", "Consolas", monospace;
-      white-space: nowrap;
-      animation: floaty 24s ease-in-out infinite;
-    }
-
     .sticker-img {
       position: absolute;
       width: 56px;
@@ -85,6 +69,8 @@
     .sticker-img.s4 { animation-duration: 36s; }
     .sticker-img.s5 { animation-duration: 30s; }
     .sticker-img.s6 { animation-duration: 34s; }
+    .sticker-img.s7 { animation-duration: 38s; }
+    .sticker-img.s8 { animation-duration: 40s; }
 
     @keyframes floaty {
       0% { transform: translate3d(0, 0, 0) rotate(-2deg); }
@@ -250,7 +236,7 @@
       .brand { font-size: 1.9rem; }
       .subtitle { font-size: 0.94rem; }
       .article-card h1 { font-size: 1.75rem; }
-      .sticker, .sticker-img { display: none; }
+      .sticker-img { display: none; }
     }
   </style>
 </head>
@@ -263,16 +249,22 @@
     <img class="sticker-img s5" style="top: 78%; left: 12%;" src="{{ '/assets/stickers/tools/linux.svg' | relative_url }}" alt="">
     <img class="sticker-img s2 soft" style="top: 34%; right: 24%;" src="{{ '/assets/stickers/tools/github-actions.svg' | relative_url }}" alt="">
     <img class="sticker-img s6 big" style="top: 70%; right: 20%;" src="{{ '/assets/stickers/memes/nerd-face.svg' | relative_url }}" alt="">
-    <img class="sticker-img s3 soft" style="top: 46%; right: 5%;" src="{{ '/assets/stickers/memes/sweat-smile.svg' | relative_url }}" alt="">
     <img class="sticker-img s5 soft" style="top: 84%; left: 22%;" src="{{ '/assets/stickers/memes/exploding-head.svg' | relative_url }}" alt="">
-    <span class="sticker s1" style="top: 12%; left: 4%;">terraform plan</span>
-    <span class="sticker s2" style="top: 24%; right: 6%;">k8s rollout</span>
-    <span class="sticker s3" style="top: 44%; left: 8%;">prometheus alert</span>
-    <span class="sticker s4" style="top: 62%; right: 9%;">helm upgrade</span>
-    <span class="sticker s5" style="top: 78%; left: 5%;">ci pipeline</span>
-    <span class="sticker s6" style="top: 86%; right: 11%;">linux ops</span>
-    <span class="sticker s2" style="top: 34%; right: 18%;">pepe: deploy survived</span>
-    <span class="sticker s4" style="top: 70%; left: 16%;">pepe: on-call mode</span>
+    <img class="sticker-img s7 soft" style="top: 40%; right: 30%;" src="{{ '/assets/stickers/memes/beer.svg' | relative_url }}" alt="">
+    <img class="sticker-img s7 soft" style="top: 14%; right: 3%;" src="{{ '/assets/stickers/tools/docker.svg' | relative_url }}" alt="">
+    <img class="sticker-img s8" style="top: 27%; left: 3%;" src="{{ '/assets/stickers/tools/ansible.svg' | relative_url }}" alt="">
+    <img class="sticker-img s4 soft" style="top: 52%; left: 3%;" src="{{ '/assets/stickers/tools/grafana.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 soft" style="top: 64%; right: 3%;" src="{{ '/assets/stickers/tools/argo.svg' | relative_url }}" alt="">
+    <img class="sticker-img s7 soft" style="top: 82%; right: 4%;" src="{{ '/assets/stickers/tools/jenkins.svg' | relative_url }}" alt="">
+    <img class="sticker-img s8 soft" style="top: 90%; left: 35%;" src="{{ '/assets/stickers/tools/gitlab.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 soft" style="top: 76%; right: 27%;" src="{{ '/assets/stickers/memes/boom.svg' | relative_url }}" alt="">
+    <img class="sticker-img s5 soft" style="top: 6%; left: 36%;" src="{{ '/assets/stickers/tools/nginx.svg' | relative_url }}" alt="">
+    <img class="sticker-img s4 soft" style="top: 30%; left: 20%;" src="{{ '/assets/stickers/tools/redis.svg' | relative_url }}" alt="">
+    <img class="sticker-img s8 soft" style="top: 42%; right: 20%;" src="{{ '/assets/stickers/tools/postgresql.svg' | relative_url }}" alt="">
+    <img class="sticker-img s7 soft" style="top: 50%; right: 10%;" src="{{ '/assets/stickers/tools/rabbitmq.svg' | relative_url }}" alt="">
+    <img class="sticker-img s3 soft" style="top: 66%; left: 6%;" src="{{ '/assets/stickers/tools/elasticsearch.svg' | relative_url }}" alt="">
+    <img class="sticker-img s2 soft" style="top: 18%; right: 18%;" src="{{ '/assets/stickers/tools/aws.svg' | relative_url }}" alt="">
+    <img class="sticker-img s6 soft" style="top: 88%; right: 18%;" src="{{ '/assets/stickers/tools/gcp.svg' | relative_url }}" alt="">
   </div>
   <div class="site-shell">
     <header class="site-head">
