@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Тестовый кейс: стабильный Terraform plan в sandbox"
-date: 2026-05-26 09:30:00 +0200
+date: 2026-05-24 09:30:00 +0200
 categories: [devops]
 tags: [terraform, iac, ci-cd]
 featured: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Тестовый кейс: снижение шума алертов в observability"
-date: 2026-05-27 11:15:00 +0200
+date: 2026-05-23 11:15:00 +0200
 categories: [devops]
 tags: [observability, prometheus, sre]
 featured: false
