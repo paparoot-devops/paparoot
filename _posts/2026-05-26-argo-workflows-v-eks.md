@@ -309,7 +309,7 @@ helm upgrade --install argo-workflows argo/argo-workflows \
 
 Далі заходимо по домену з Ingress (DNS, сподіваюсь, уже прописаний), логінимось через LDAP і отримуємо веб-інтерфейс.
 
-![Argo Workflows UI](/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png)
+![Argo Workflows UI]({{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png' | relative_url }})
 
 ## Тестовий CronWorkflow
 
@@ -367,7 +367,7 @@ test-cronworkflow   85s
 ```
 
 ```bash
-kubectl apply -f test-cronworkflow.yaml
+kubectl describe cronworkflow test-cronworkflow -n argocd
 
 Name:         test-cronworkflow
 Namespace:    argocd
@@ -421,7 +421,7 @@ Events:       <none>
 
 У UI бачимо `CronWorkflow` з іконкою паузи (бо `suspend: true`), відкриваємо його, тиснемо `SUBMIT` і чекаємо run.
 
-![CronWorkflow in UI](/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png)
+![CronWorkflow in UI]({{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png' | relative_url }})
 
 Після успішного run дивимось, чи артефакти реально потрапили в S3:
 
@@ -434,7 +434,7 @@ aws s3 ls s3://eks-s3-argo-workflows-bucket/argocd/test-cronworkflow-<run-id>/te
 2026-05-27 17:35:41        156 result.tgz
 ```
 
-![S3 artifacts](/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png)
+![S3 artifacts]({{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png' | relative_url }})
 
 Можна ще підкрутити `keyFormat`, щоб не дублювались директорії.  
 І важливе з практики. Якщо workflow запускається не в тому namespace, де правильно налаштований `ServiceAccount` для IRSA, він або не стартує нормально, або падає на роботі з артефактами.
