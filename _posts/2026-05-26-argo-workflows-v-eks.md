@@ -309,12 +309,7 @@ helm upgrade --install argo-workflows argo/argo-workflows \
 
 Далі заходимо по домену з Ingress (DNS, сподіваюсь, уже прописаний), логінимось через LDAP і отримуємо веб-інтерфейс.
 
-<img
-  src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png' | relative_url }}"
-  alt="Argo Workflows UI"
-  class="post-shot"
-  data-full="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png' | relative_url }}"
->
+![Argo Workflows UI]({{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png' | relative_url }})
 
 ## Тестовий CronWorkflow
 
@@ -426,12 +421,7 @@ Events:       <none>
 
 У UI бачимо `CronWorkflow` з іконкою паузи (бо `suspend: true`), відкриваємо його, тиснемо `SUBMIT` і чекаємо run.
 
-<img
-  src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png' | relative_url }}"
-  alt="CronWorkflow in UI"
-  class="post-shot"
-  data-full="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png' | relative_url }}"
->
+![CronWorkflow in UI]({{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png' | relative_url }})
 
 Після успішного run дивимось, чи артефакти реально потрапили в S3:
 
@@ -442,12 +432,7 @@ aws s3 ls s3://eks-s3-argo-workflows-bucket/argocd/test-cronworkflow-<run-id>/te
 2026-05-27 17:35:41        156 result.tgz
 ```
 
-<img
-  src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png' | relative_url }}"
-  alt="S3 artifacts"
-  class="post-shot"
-  data-full="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png' | relative_url }}"
->
+![S3 artifacts]({{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png' | relative_url }})
 
 Можна ще підкрутити `keyFormat`, щоб не дублювались директорії.  
 І важливе з практики. Якщо workflow запускається не в тому namespace, де правильно налаштований `ServiceAccount` для IRSA, він або не стартує нормально, або падає на роботі з артефактами.
@@ -458,89 +443,6 @@ aws s3 ls s3://eks-s3-argo-workflows-bucket/argocd/test-cronworkflow-<run-id>/te
 - IAM роль за цим ARN має права на потрібний S3 bucket/prefix.
 
 Якщо цього нема, у логах workflow/controller зазвичай бачимо `AccessDenied` або `NoCredentialProviders`. У UI це часто виглядає як failed run або відсутність очікуваних артефактів після запуску.
-
-<div id="img-lightbox" class="img-lightbox" aria-hidden="true">
-  <button id="img-lightbox-close" class="img-lightbox-close" aria-label="Закрити">×</button>
-  <img id="img-lightbox-image" src="" alt="">
-</div>
-
-<style>
-  .post-shot {
-    max-width: 920px;
-    width: 100%;
-    height: auto;
-    display: block;
-    margin: 12px auto;
-    cursor: zoom-in;
-  }
-  .img-lightbox {
-    position: fixed;
-    inset: 0;
-    background: rgba(6, 10, 16, 0.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    padding: 24px;
-  }
-  .img-lightbox.open {
-    display: flex;
-  }
-  .img-lightbox img {
-    max-width: min(96vw, 1800px);
-    max-height: 90vh;
-    width: auto;
-    height: auto;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
-    border-radius: 4px;
-  }
-  .img-lightbox-close {
-    position: absolute;
-    top: 16px;
-    right: 20px;
-    border: 0;
-    background: transparent;
-    color: #fff;
-    font-size: 42px;
-    line-height: 1;
-    cursor: pointer;
-  }
-</style>
-
-<script>
-  (function () {
-    var shots = document.querySelectorAll('.post-shot');
-    var lightbox = document.getElementById('img-lightbox');
-    var lightboxImg = document.getElementById('img-lightbox-image');
-    var closeBtn = document.getElementById('img-lightbox-close');
-    if (!shots.length || !lightbox || !lightboxImg || !closeBtn) return;
-
-    function closeLightbox() {
-      lightbox.classList.remove('open');
-      lightbox.setAttribute('aria-hidden', 'true');
-      lightboxImg.src = '';
-      document.body.style.overflow = '';
-    }
-
-    shots.forEach(function (img) {
-      img.addEventListener('click', function () {
-        lightboxImg.src = img.getAttribute('data-full') || img.src;
-        lightboxImg.alt = img.alt || '';
-        lightbox.classList.add('open');
-        lightbox.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      });
-    });
-
-    closeBtn.addEventListener('click', closeLightbox);
-    lightbox.addEventListener('click', function (e) {
-      if (e.target === lightbox) closeLightbox();
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeLightbox();
-    });
-  })();
-</script>
 
 ## Висновок
 

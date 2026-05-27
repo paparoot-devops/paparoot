@@ -73,6 +73,50 @@ layout: default
   padding-top: 2rem;
 }
 
+.article-card img {
+  max-width: 920px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 12px auto;
+  cursor: zoom-in;
+}
+
+.img-lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 10, 16, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px;
+}
+
+.img-lightbox.open { display: flex; }
+
+.img-lightbox img {
+  max-width: min(96vw, 1800px);
+  max-height: 90vh;
+  width: auto;
+  height: auto;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+  border-radius: 4px;
+  cursor: default;
+}
+
+.img-lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 42px;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .code-copy {
   position: absolute;
   top: 0.45rem;
@@ -146,6 +190,11 @@ layout: default
   </aside>
 </div>
 
+<div id="img-lightbox" class="img-lightbox" aria-hidden="true">
+  <button id="img-lightbox-close" class="img-lightbox-close" aria-label="Закрити">×</button>
+  <img id="img-lightbox-image" src="" alt="">
+</div>
+
 <script>
 (function () {
   var article = document.getElementById('post-article');
@@ -182,5 +231,41 @@ layout: default
     });
     pre.appendChild(btn);
   });
+
+  var articleImages = Array.prototype.slice.call(document.querySelectorAll('.article-card img'));
+  var lightbox = document.getElementById('img-lightbox');
+  var lightboxImg = document.getElementById('img-lightbox-image');
+  var closeBtn = document.getElementById('img-lightbox-close');
+
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    if (lightboxImg) {
+      lightboxImg.src = '';
+      lightboxImg.alt = '';
+    }
+    document.body.style.overflow = '';
+  }
+
+  if (articleImages.length && lightbox && lightboxImg && closeBtn) {
+    articleImages.forEach(function (img) {
+      img.addEventListener('click', function () {
+        lightboxImg.src = img.currentSrc || img.src;
+        lightboxImg.alt = img.alt || '';
+        lightbox.classList.add('open');
+        lightbox.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) closeLightbox();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+  }
 })();
 </script>
