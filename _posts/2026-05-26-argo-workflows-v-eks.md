@@ -309,7 +309,9 @@ helm upgrade --install argo-workflows argo/argo-workflows \
 
 Далі заходимо по домену з Ingress (DNS, сподіваюсь, уже прописаний), логінимось через LDAP і отримуємо веб-інтерфейс.
 
-<img src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png' | relative_url }}" alt="Argo Workflows UI" style="max-width: 920px; width: 100%; height: auto; display: block; margin: 12px auto;">
+<a href="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png' | relative_url }}" target="_blank" rel="noopener noreferrer">
+  <img src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png' | relative_url }}" alt="Argo Workflows UI" style="max-width: 920px; width: 100%; height: auto; display: block; margin: 12px auto; cursor: zoom-in;">
+</a>
 
 ## Тестовий CronWorkflow
 
@@ -421,20 +423,22 @@ Events:       <none>
 
 У UI бачимо `CronWorkflow` з іконкою паузи (бо `suspend: true`), відкриваємо його, тиснемо `SUBMIT` і чекаємо run.
 
-<img src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png' | relative_url }}" alt="CronWorkflow in UI" style="max-width: 920px; width: 100%; height: auto; display: block; margin: 12px auto;">
+<a href="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png' | relative_url }}" target="_blank" rel="noopener noreferrer">
+  <img src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png' | relative_url }}" alt="CronWorkflow in UI" style="max-width: 920px; width: 100%; height: auto; display: block; margin: 12px auto; cursor: zoom-in;">
+</a>
 
 Після успішного run дивимось, чи артефакти реально потрапили в S3:
 
 ```bash
 aws s3 ls s3://eks-s3-argo-workflows-bucket/argocd/test-cronworkflow-<run-id>/test-cronworkflow-<run-id>/
-```
 
-```text
 2026-05-27 17:35:42         50 main.log
 2026-05-27 17:35:41        156 result.tgz
 ```
 
-<img src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png' | relative_url }}" alt="S3 artifacts" style="max-width: 920px; width: 100%; height: auto; display: block; margin: 12px auto;">
+<a href="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png' | relative_url }}" target="_blank" rel="noopener noreferrer">
+  <img src="{{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png' | relative_url }}" alt="S3 artifacts" style="max-width: 920px; width: 100%; height: auto; display: block; margin: 12px auto; cursor: zoom-in;">
+</a>
 
 Можна ще підкрутити `keyFormat`, щоб не дублювались директорії.  
 І важливе з практики. Якщо workflow запускається не в тому namespace, де правильно налаштований `ServiceAccount` для IRSA, він або не стартує нормально, або падає на роботі з артефактами.
