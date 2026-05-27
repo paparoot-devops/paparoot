@@ -281,7 +281,7 @@ extraObjects:
 
 ### Артефакти в S3 через IRSA {#s3-irsa-artifacts}
 
-Для зберігання output-файлів workflow та archived logs підключаємо S3 як сховище артефактів. IRSA role і policy до неї роблю через Terraform. Використовуємо саме IRSA, а не статичні ключі. `useStaticCredentials: false` і `useSDKCreds: true` означають, що беремо AWS credentials із IAM role pod'ів.
+Для зберігання output-файлів workflow та archived logs підключаємо S3 як сховище артефактів. IRSA role і policy до неї роблю через Terraform, але якщо робите це руками, можна скористатись офіційною документацією: [AWS EKS IRSA](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html). Використовуємо саме IRSA, а не статичні ключі. `useStaticCredentials: false` і `useSDKCreds: true` означають, що беремо AWS credentials із IAM role pod'ів.
 
 IAM роль прив'язуємо через `eks.amazonaws.com/role-arn` на `workflow/controller/server` service accounts. У результаті pod'и отримують тимчасові AWS credentials через OIDC/STS. `archiveLogs: true` вмикає зберігання логів як артефактів у S3, а `keyFormat` задає зрозумілу ієрархію `<namespace>/<workflow>/<pod>`.
 
