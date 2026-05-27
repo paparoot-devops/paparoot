@@ -17,17 +17,38 @@ Argo Workflows я, чесно кажучи, не планував чіпати. 
 
 Є кластер EKS (Kubernetes 1.35), є ArgoCD, тож ставимо Argo Workflows через Helm.
 
+І так додаємо чарт.
+
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
+```
 
+Далі глянемо що у нас по версіях чарту.
+```bash
 helm search repo argo/argo-workflows --versions | head -20
 
+NAME               	CHART VERSION	APP VERSION	DESCRIPTION                    
+argo/argo-workflows	1.0.14       	v4.0.5     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.13       	v4.0.5     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.12       	v4.0.5     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.11       	v4.0.4     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.10       	v4.0.4     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.9        	v4.0.4     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.8        	v4.0.4     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.7        	v4.0.4     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.6        	v4.0.3     	A Helm chart for Argo Workflows
+argo/argo-workflows	1.0.5        	v4.0.3     	A Helm chart for Argo Workflows
+...
+```
+
+Ну і далі, як ви здогадались зберігаємо дефолтніе values в файл.
+
+```bash
 helm show values argo/argo-workflows \
   --version "1.0.14" \
   > values.yaml
 ```
-
 Версія `1.0.14` тут як приклад з мого кейсу. Якщо читаєте це пізніше, просто беріть актуальну з `helm search`.
 
 ## Налаштування контролера {#controller-config}
