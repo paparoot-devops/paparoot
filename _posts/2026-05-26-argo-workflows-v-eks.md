@@ -474,7 +474,7 @@ aws s3 ls s3://eks-s3-argo-workflows-bucket/argocd/test-cronworkflow-<run-id>/te
 
 Якщо цього нема, у логах workflow/controller зазвичай бачимо `AccessDenied` або `NoCredentialProviders`. У UI це часто виглядає як failed run або відсутність очікуваних артефактів після запуску.
 
-Також всі наші Workflows можна деплоїти як звизчайні маніфести через ArgoCD
+Також всі наші Workflows можна деплоїти як звизчайні маніфести через ArgoCD.
 
 ## Висновок {#summary}
 
