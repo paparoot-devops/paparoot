@@ -43,7 +43,7 @@ argo/argo-workflows	1.0.5        	v4.0.3     	A Helm chart for Argo Workflows
 ...
 ```
 
-Ну і далі, як ви здогадались зберігаємо дефолтніе values в файл, або якщо дуже хочется можна скачати в репо чарту ArgoWorkflow https://github.com/argoproj/argo-helm/tree/main/charts/argo-workflows
+Ну і далі, як ви здогадались зберігаємо дефолтніе values в файл, або якщо дуже хочется можна скачати в репо чарту [ArgoWorkflow](https://github.com/argoproj/argo-helm/tree/main/charts/argo-workflows)
 
 ```bash
 helm show values argo/argo-workflows \
