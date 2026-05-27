@@ -17,7 +17,7 @@ Argo Workflows я, чесно кажучи, не планував чіпати. 
 
 Є кластер EKS (Kubernetes 1.35), є ArgoCD, тож ставимо Argo Workflows через Helm.
 
-І так додаємо чарт.
+І так додаємо репозиторій чарту.
 
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
@@ -42,7 +42,7 @@ argo/argo-workflows	1.0.5        	v4.0.3     	A Helm chart for Argo Workflows
 ...
 ```
 
-Ну і далі, як ви здогадались зберігаємо дефолтніе values в файл.
+Ну і далі, як ви здогадались зберігаємо дефолтніе values в файл, або якщо дуже хочется можна скачати в репо чарту ArgoWorkflow https://github.com/argoproj/argo-helm/tree/main/charts/argo-workflows
 
 ```bash
 helm show values argo/argo-workflows \
