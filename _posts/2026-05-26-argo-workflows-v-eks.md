@@ -11,9 +11,11 @@ system_stage: existing
 
 Argo Workflows я, чесно кажучи, не планував чіпати. Але розробники дуже хочуть, а я і не проти. Тож наливаємо (~~пиво~~)чай і йдемо робити дивні дива.
 
-Суть проста, у нас є `CronJobs` у Kubernetes, і команді хочеться нормальну веб-морду, де можна руками запускати задачі, дивитися історію запусків і не клікати по 15 вкладках. Звісно частину можна закрити через Grafana(шо вже зроблено) + ручні тригери з того ж самого ArgoCD, але це той випадок, коли "можна", але нам не "зручно".
+Суть проста, у нас є CronJobs у Kubernetes, і команді хочеться нормальну веб-морду, де можна руками запускати задачі, дивитися історію запусків і не клікати по 15 вкладках. Звісно частину можна закрити через Grafana(шо вже зроблено) + ручні тригери з того ж самого ArgoCD, але це той випадок, коли "можна", але нам не "зручно".
 
-Є кластер EKS (Kubernetes `1.35`), є ArgoCD, тож ставимо Argo Workflows через Helm.
+## Встановлення чарта
+
+Є кластер EKS (Kubernetes 1.35), є ArgoCD, тож ставимо Argo Workflows через Helm.
 
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
@@ -28,7 +30,9 @@ helm show values argo/argo-workflows \
 
 Версія `1.0.14` тут як приклад з мого кейсу. Якщо читаєте це пізніше, просто беріть актуальну з `helm search`.
 
-Далі проводимо базову настройку під наш сценарій. Я не хотів обмежувати контролер лише namespace релізу, тому ставимо так.
+## Налаштування контролера
+
+Далі проводимо базові налаштування під наші потреби. Я не хотів обмежувати контролер лише namespace релізу, тому ставимо так.
 
 ```yaml
 singleNamespace: false
@@ -39,7 +43,9 @@ controller:
 
 Так, `workflowNamespaces: []`  це свідомо "широко" на старті. Для production краще одразу задати явний список namespace.
 
-Щоб у UI взагалі можна було зайти, піднімаємо ingress.
+### Ingress для UI
+
+Щоб у UI взагалі можна було зайти, піднімаємо ingress. В нашому випадку `ingressClassName: "haproxy"`
 
 ```yaml
 server:
@@ -61,7 +67,9 @@ server:
 ```
 Тут все про простому, накинули в анотації ACL, моніторинг, TLS.
 
-Тут починається найцікавіша частина цього квесту А - Авторизація.Так як у нас є LDAP FreeIPA то за правилами доброго тону хотілося би щоб використовували саме його, Але у Argo Workflows з коробки немає прямого LDAP login, тому робимо обхідний, але нормальний шлях: `Argo Workflows -> Dex (в ArgoCD) -> LDAP -> назад OIDC token`.
+### SSO через Dex + LDAP
+
+Тут починається найцікавіша частина цього квесту, А - Авторизація. Так як у нас є LDAP FreeIPA то за правилами доброго тону хотілося би щоб використовували саме його, але у Argo Workflows з коробки немає прямого LDAP login, тому робимо обхідний, але нормальний шлях: `Argo Workflows -> Dex (в ArgoCD) -> LDAP -> назад OIDC token`.
 
 Фрагмент Dex-конфіга в ArgoCD.
 
@@ -120,7 +128,9 @@ stringData:
   client-secret: "ARGO_WORKFLOWS_SSO_SECRET"
 ```
 
-Далі найцікавіше, мапимо LDAP-групи через `extraObjects` того ж `argo-workflows` chart. Беремо групи, які вже створені під ArgoCD, і робимо під них `ServiceAccount`, `Secret`, `ClusterRole` та `ClusterRoleBinding`.
+### RBAC мапінг груп
+
+Далі мапимо LDAP-групи через `extraObjects`. Беремо групи, які вже створені під ArgoCD, і робимо під них `ServiceAccount`, `Secret`, `ClusterRole` та `ClusterRoleBinding`.
 
 Логіка цього \"велосипеда\" така. Користувач логіниться через LDAP/Dex, Argo Workflows читає `groups` claim з OIDC token, підбирає відповідний `ServiceAccount` за правилом `workflows.argoproj.io/rbac-rule` і застосовує його права. Якщо матчів кілька, спрацьовує `workflows.argoproj.io/rbac-rule-precedence` (пріоритет вибору). 
 Окремо важливий момент. `*.service-account-token` secret тут створюємо свідомо, бо без нього легко зловити `failed to get service account secret`. Argo очікує token-secret для обраного SA з іменем `<sa>.service-account-token`.
@@ -248,6 +258,8 @@ extraObjects:
 
 Для прикладу робимо окремі ролі під admin і readonly, плюс binding для `argo-workflows-server`, щоб він міг читати потрібні `serviceaccounts/secrets`.
 
+### Артефакти в S3 через IRSA
+
 Для зберігання output-файлів workflow та archived logs підключаємо S3 як сховище артефактів. IRSA role і policy до неї роблю через Terraform. Використовуємо саме IRSA, а не статичні ключі. `useStaticCredentials: false` і `useSDKCreds: true` означають, що беремо AWS credentials із IAM role pod'ів.
 
 IAM роль прив'язуємо через `eks.amazonaws.com/role-arn` на `workflow/controller/server` service accounts. У результаті pod'и отримують тимчасові AWS credentials через OIDC/STS. `archiveLogs: true` вмикає зберігання логів як артефактів у S3, а `keyFormat` задає зрозумілу ієрархію `<namespace>/<workflow>/<pod>`.
@@ -293,9 +305,13 @@ helm upgrade --install argo-workflows argo/argo-workflows \
   -f values.yaml
 ```
 
+## Перевірка в UI
+
 Далі заходимо по домену з Ingress (DNS, сподіваюсь, уже прописаний), логінимось через LDAP і отримуємо веб-інтерфейс.
 
-<img src="/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png" alt="Argo Workflows UI" style="max-width:1100px;width:100%;height:auto;" loading="lazy">
+![Argo Workflows UI](/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png)
+
+## Тестовий CronWorkflow
 
 І так, тепер тестуємо `CronWorkflow`, щоб перевірити не тільки UI, а й весь ланцюг. CRD, контролер, `ServiceAccount`, IRSA, S3-артефакти і базову поведінку history/TTL.
 
@@ -341,13 +357,71 @@ spec:
 
 ```bash
 kubectl apply -f test-cronworkflow.yaml
+```
+
+```bash
 kubectl get cronworkflow -n argocd
-kubectl describe cronworkflow test-cronworkflow -n argocd
+
+NAME                AGE
+test-cronworkflow   85s
+```
+
+```bash
+kubectl apply -f test-cronworkflow.yaml
+
+Name:         test-cronworkflow
+Namespace:    argocd
+Labels:       <none>
+Annotations:  cronworkflows.argoproj.io/last-used-schedule: CRON_TZ=UTC */2 * * * *
+API Version:  argoproj.io/v1alpha1
+Kind:         CronWorkflow
+Metadata:
+  Creation Timestamp:  2026-05-27T15:31:30Z
+  Generation:          2
+  Resource Version:    85605963
+  UID:                 7d4a3606-00cc-44e9-a5b6-f6fd83d47696
+Spec:
+  Concurrency Policy:         Forbid
+  Failed Jobs History Limit:  3
+  Schedules:
+    */2 * * * *
+  Successful Jobs History Limit:  3
+  Suspend:                        true
+  Timezone:                       UTC
+  Workflow Spec:
+    Entrypoint:            main
+    Service Account Name:  argo-workflow
+    Templates:
+      Container:
+        Args:
+          set -eu
+mkdir -p /tmp/artifacts
+echo "hello from test-cronworkflow" > /tmp/artifacts/result.txt
+date -u +"%Y-%m-%dT%H:%M:%SZ" >> /tmp/artifacts/result.txt
+cat /tmp/artifacts/result.txt
+
+        Command:
+          /bin/sh
+          -c
+        Image:  alpine:3.20
+      Name:     main
+      Outputs:
+        Artifacts:
+          Name:  result
+          Path:  /tmp/artifacts/result.txt
+    Ttl Strategy:
+      Seconds After Failure:  3600
+      Seconds After Success:  3600
+Status:
+  Failed:     0
+  Phase:      
+  Succeeded:  0
+Events:       <none>
 ```
 
 У UI бачимо `CronWorkflow` з іконкою паузи (бо `suspend: true`), відкриваємо його, тиснемо `SUBMIT` і чекаємо run.
 
-<img src="/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png" alt="CronWorkflow in UI" style="max-width:1100px;width:100%;height:auto;" loading="lazy">
+![CronWorkflow in UI](/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-cronworkflow.png)
 
 Після успішного run дивимось, чи артефакти реально потрапили в S3:
 
@@ -360,7 +434,7 @@ aws s3 ls s3://eks-s3-argo-workflows-bucket/argocd/test-cronworkflow-<run-id>/te
 2026-05-27 17:35:41        156 result.tgz
 ```
 
-<img src="/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png" alt="S3 artifacts" style="max-width:1100px;width:100%;height:auto;" loading="lazy">
+![S3 artifacts](/assets/img/posts/argo-workflows-v-eks/argo-workflows-s3-artifacts.png)
 
 Можна ще підкрутити `keyFormat`, щоб не дублювались директорії.  
 І важливе з практики. Якщо workflow запускається не в тому namespace, де правильно налаштований `ServiceAccount` для IRSA, він або не стартує нормально, або падає на роботі з артефактами.
@@ -375,6 +449,6 @@ aws s3 ls s3://eks-s3-argo-workflows-bucket/argocd/test-cronworkflow-<run-id>/te
 
 ## Висновок
 
-Argo Workflows у цьому кейсі заходить дуже практично: закриває ручні запускі, дає прозорість і не ламає модель доступів. Тобто не "ще один модний тул", а реальна економія часу для команди.
+Argo Workflows у цьому кейсі заходить дуже практично: закриває ручні запуски, дає прозорість і не ламає модель доступів. Тобто не "ще один модний тул", а реальна економія часу для команди.
 
 Якщо коротко: коли `CronJobs` вже працюють, але людям боляче з ними жити, Argo Workflows може бути дуже влучним апгрейдом.
