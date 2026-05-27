@@ -4,9 +4,7 @@ layout: default
 
 <style>
 .post-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(240px, 0.9fr);
-  gap: 1rem;
+  display: block;
   padding: 1rem;
 }
 
@@ -40,6 +38,10 @@ layout: default
 .box-inner {
   padding: 0.72rem 0.78rem;
   color: #d7e3f5;
+}
+
+.article-toc {
+  margin: 0.9rem 0 1rem;
 }
 
 .toc-list {
@@ -130,9 +132,6 @@ layout: default
   cursor: pointer;
 }
 
-@media (max-width: 940px) {
-  .post-grid { grid-template-columns: 1fr; }
-}
 </style>
 
 <div class="post-grid">
@@ -147,6 +146,12 @@ layout: default
           <span>{{ page.date | date: "%Y-%m-%d" }}</span>
           <span class="muted-dot">•</span>
           <span>{{ reading_time }} min read</span>
+        </div>
+        <div class="toc-box article-toc" id="toc-box">
+          <h3 class="box-title">Зміст</h3>
+          <div class="box-inner">
+            <ul class="toc-list" id="toc-list"></ul>
+          </div>
         </div>
         {{ content }}
       </article>
@@ -179,15 +184,6 @@ layout: default
       </div>
     </section>
   </main>
-
-  <aside>
-    <div class="toc-box" id="toc-box">
-      <h3 class="box-title">Зміст</h3>
-      <div class="box-inner">
-        <ul class="toc-list" id="toc-list"></ul>
-      </div>
-    </div>
-  </aside>
 </div>
 
 <div id="img-lightbox" class="img-lightbox" aria-hidden="true">
