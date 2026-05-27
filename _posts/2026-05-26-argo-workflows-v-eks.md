@@ -13,7 +13,7 @@ Argo Workflows я, чесно кажучи, не планував чіпати. 
 
 Суть проста, у нас є CronJobs у Kubernetes, і команді розробників хочеться нормальну веб-морду, де можна руками запускати задачі, дивитися історію запусків і не клікати по 15 вкладках. Звісно частину можна закрити через Grafana(шо вже зроблено) + ручні тригери з того ж самого ArgoCD, але це той випадок, коли "можна", але нам не "зручно". Тому після недовгого сумісного R&D зупинились на Argo Workflows.
 
-## Встановлення чарта
+## Встановлення чарта {#install-chart}
 
 Є кластер EKS (Kubernetes 1.35), є ArgoCD, тож ставимо Argo Workflows через Helm.
 
@@ -30,7 +30,7 @@ helm show values argo/argo-workflows \
 
 Версія `1.0.14` тут як приклад з мого кейсу. Якщо читаєте це пізніше, просто беріть актуальну з `helm search`.
 
-## Налаштування контролера
+## Налаштування контролера {#controller-config}
 
 Далі проводимо базові налаштування під наші потреби. Я не хотів обмежувати контролер лише namespace релізу, тому ставимо так.
 
@@ -43,7 +43,7 @@ controller:
 
 Так, `workflowNamespaces: []`  це свідомо "широко" на старті. Для production краще одразу задати явний список namespace.
 
-### Ingress для UI
+### Ingress для UI {#ingress-ui}
 
 Щоб у UI взагалі можна було зайти, піднімаємо ingress. В нашому випадку `ingressClassName: "haproxy"`
 
@@ -67,7 +67,7 @@ server:
 ```
 Тут все по простому, накинули в анотації ACL, моніторинг, TLS.
 
-### SSO через Dex + LDAP
+### SSO через Dex + LDAP {#sso-dex-ldap}
 
 Тут починається найцікавіша частина цього квесту, А - Авторизація. Так як у нас є LDAP FreeIPA то за правилами доброго тону хотілося б щоб використовували саме його, але у Argo Workflows з коробки немає прямого LDAP login, тому робимо обхідний, але нормальний шлях: `Argo Workflows -> Dex (в ArgoCD) -> LDAP -> назад OIDC token`.
 
@@ -128,7 +128,7 @@ stringData:
   client-secret: "ARGO_WORKFLOWS_SSO_SECRET"
 ```
 
-### RBAC мапінг груп
+### RBAC мапінг груп {#rbac-group-mapping}
 
 Далі мапимо LDAP-групи через `extraObjects`. Беремо групи, які вже створені під ArgoCD, і робимо під них `ServiceAccount`, `Secret`, `ClusterRole` та `ClusterRoleBinding`.
 
@@ -258,7 +258,7 @@ extraObjects:
 
 Для прикладу робимо окремі ролі під admin і readonly, плюс binding для `argo-workflows-server`, щоб він міг читати потрібні `serviceaccounts/secrets`.
 
-### Артефакти в S3 через IRSA
+### Артефакти в S3 через IRSA {#s3-irsa-artifacts}
 
 Для зберігання output-файлів workflow та archived logs підключаємо S3 як сховище артефактів. IRSA role і policy до неї роблю через Terraform. Використовуємо саме IRSA, а не статичні ключі. `useStaticCredentials: false` і `useSDKCreds: true` означають, що беремо AWS credentials із IAM role pod'ів.
 
@@ -305,13 +305,13 @@ helm upgrade --install argo-workflows argo/argo-workflows \
   -f values.yaml
 ```
 
-## Перевірка в UI
+## Перевірка в UI {#ui-check}
 
 Далі заходимо по домену з Ingress (DNS сподіваюсь уже прописаний), логінимось через LDAP і отримуємо той самий довгоочікуванний веб-інтерфейс.
 
 ![Argo Workflows UI]({{ '/assets/img/posts/argo-workflows-v-eks/argo-workflows-ui-login.png' | relative_url }})
 
-## Тестовий CronWorkflow
+## Тестовий CronWorkflow {#test-cronworkflow}
 
 І так, тепер тестуємо `CronWorkflow`, щоб перевірити не тільки UI, а й весь ланцюг. CRD, контролер, `ServiceAccount`, IRSA, S3-артефакти і базову поведінку history/TTL.
 
@@ -445,6 +445,6 @@ aws s3 ls s3://eks-s3-argo-workflows-bucket/argocd/test-cronworkflow-<run-id>/te
 
 Якщо цього нема, у логах workflow/controller зазвичай бачимо `AccessDenied` або `NoCredentialProviders`. У UI це часто виглядає як failed run або відсутність очікуваних артефактів після запуску.
 
-## Висновок
+## Висновок {#summary}
 
 Argo Workflows у цьому кейсі зайшов як треба. Ручні запуски перестають бути шаманським ритуалом, історія запусків лежить на місці, доступи не розповзаються в хаос, а команда менше страждає в стилі "хто, де і чому це запускав о 03:17, воно запускалось за розкладом чи ні та де DevOps який може подивтись логи?".
