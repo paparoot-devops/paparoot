@@ -197,7 +197,9 @@ layout: default
   var tocList = document.getElementById('toc-list');
   var tocBox = document.getElementById('toc-box');
   if (article && tocList) {
-    var headings = Array.prototype.slice.call(article.querySelectorAll('h2, h3'));
+    var headings = Array.prototype.slice.call(article.querySelectorAll('h2, h3')).filter(function (h) {
+      return !h.closest('#toc-box');
+    });
     headings.forEach(function (h, i) {
       if (!h.id) h.id = 'sec-' + (i + 1);
       var li = document.createElement('li');
