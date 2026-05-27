@@ -63,10 +63,18 @@ layout: default
   width: 108px;
   height: 108px;
   border-radius: 10px;
+  overflow: hidden;
   background:
     radial-gradient(circle at 30% 30%, rgba(34, 211, 238, 0.24) 0, transparent 42%),
     linear-gradient(145deg, #1f2937, #0f172a);
   border: 1px solid #334155;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .post-excerpt {
@@ -164,7 +172,11 @@ layout: default
       {% if reading_time < 1 %}{% assign reading_time = 1 %}{% endif %}
       <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }} · {{ reading_time }} min read</div>
       <div class="post-body">
-        <div class="thumb" aria-hidden="true"></div>
+        <div class="thumb" aria-hidden="true">
+          {% if post.preview_image %}
+            <img src="{{ post.preview_image | relative_url }}" alt="">
+          {% endif %}
+        </div>
         <div>
           <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 250 }}</p>
           <a class="read-more" href="{{ post.url | relative_url }}">Читати далі »</a>

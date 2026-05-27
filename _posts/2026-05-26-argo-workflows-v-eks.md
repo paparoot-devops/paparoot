@@ -5,6 +5,7 @@ date: 2026-05-26 20:10:00 +0200
 categories: [devops]
 tags: [kubernetes, eks, argo-workflows, argocd, dex, ldap]
 featured: false
+preview_image: /assets/stickers/tools/argo.svg
 case_type: change-case
 system_stage: existing
 ---
