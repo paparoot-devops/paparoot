@@ -18,7 +18,7 @@ Argo Workflows я, чесно кажучи, не планував чіпати. 
 
 Є кластер EKS (Kubernetes 1.35), є ArgoCD, тож ставимо Argo Workflows через Helm.
 
-І так додаємо репозиторій чарту.
+І так, додаємо репозиторій чарту.
 
 ```bash
 helm repo add argo https://argoproj.github.io/argo-helm
