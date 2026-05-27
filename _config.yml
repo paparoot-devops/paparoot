@@ -1,6 +1,6 @@
 title: "DevOps Notes"
 description: "Будні DevOps-інженера: практичні кейси, розбір польотів і падінь."
-baseurl: ""
+baseurl: "/paparoot"
 theme: minima
 markdown: kramdown
 plugins:
