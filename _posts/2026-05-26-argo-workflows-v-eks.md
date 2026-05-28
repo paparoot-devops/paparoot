@@ -286,6 +286,7 @@ extraObjects:
 
 IAM роль прив'язуємо через `eks.amazonaws.com/role-arn` на `workflow/controller/server` service accounts. У результаті pod'и отримують тимчасові AWS credentials через OIDC/STS. `archiveLogs: true` вмикає зберігання логів як артефактів у S3, а `keyFormat` задає зрозумілу ієрархію `<namespace>/<workflow>/<pod>`.
 
+{% raw %}
 ```yaml
 workflow:
   serviceAccount:
@@ -315,8 +316,9 @@ artifactRepository:
     endpoint: s3.eu-central-1.amazonaws.com
     region: eu-central-1
     useSDKCreds: true
-    keyFormat: '{{workflow.namespace}}/{{workflow.name}}/{{pod.name}}'
+    keyFormat: "{{workflow.namespace}}/{{workflow.name}}/{{pod.name}}"
 ```
+{% endraw %}
 
 Після цього ставимо Argo Workflows з нашим `values.yaml`.
 
