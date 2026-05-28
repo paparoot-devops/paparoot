@@ -315,7 +315,7 @@ artifactRepository:
     endpoint: s3.eu-central-1.amazonaws.com
     region: eu-central-1
     useSDKCreds: true
-    keyFormat: "{{workflow.namespace}}/{{workflow.name}}/{{pod.name}}"
+    keyFormat: '{{workflow.namespace}}/{{workflow.name}}/{{pod.name}}'
 ```
 
 Після цього ставимо Argo Workflows з нашим `values.yaml`.
