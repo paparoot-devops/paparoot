@@ -335,7 +335,7 @@ helm upgrade --install argo-workflows argo/argo-workflows \
 
 ## Тестовий CronWorkflow {#test-cronworkflow}
 
-І так, тепер тестуємо `CronWorkflow`, щоб перевірити не тільки UI, а й весь ланцюг. CRD, контролер, `ServiceAccount`, IRSA, S3-артефакти і базову поведінку history/TTL.
+І так, тепер тестуємо `CronWorkflow`, щоб перевірити не тільки UI, а й весь ланцюг. CRD, контролер, ServiceAccount, IRSA, S3-артефакти і базову поведінку history/TTL.
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
