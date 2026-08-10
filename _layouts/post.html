@@ -108,23 +108,6 @@ layout: default
   color: #8be9fd;
 }
 
-.rubric-note {
-  margin: 0.9rem 0 0;
-  padding: 0.85rem 0.95rem;
-  border: 1px solid #2f4f66;
-  border-radius: 10px;
-  background: #193448;
-  color: #d6ebff;
-}
-
-.rubric-note p {
-  margin: 0 0 0.55rem;
-}
-
-.rubric-note p:last-child {
-  margin-bottom: 0;
-}
-
 .article-card pre {
   position: relative;
   padding-top: 2rem;
@@ -217,14 +200,6 @@ layout: default
           {% endif %}
           {% if page.series_title %}
           <span class="meta-pill"><strong>Серія</strong> {{ page.series_title }}{% if page.series_part %} · частина {{ page.series_part }}{% endif %}</span>
-          {% endif %}
-        </div>
-        {% endif %}
-        {% if rubric_data and rubric_data.description %}
-        <div class="rubric-note">
-          <p>{{ rubric_data.description }}</p>
-          {% if rubric_data.origin %}
-          <p><strong>Звідки взялась рубрика:</strong> {{ rubric_data.origin }}</p>
           {% endif %}
         </div>
         {% endif %}
