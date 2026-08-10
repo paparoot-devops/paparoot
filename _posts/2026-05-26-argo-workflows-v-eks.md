@@ -3,6 +3,8 @@ layout: post
 title: "Argo Workflows в EKS: коли CronJobs вже не вивозять"
 date: 2026-05-26 20:10:00 +0200
 categories: [devops]
+rubric: "Робочі кейси"
+rubric_key: current-work
 tags: [kubernetes, eks, argo-workflows, argocd, dex, ldap]
 featured: false
 preview_image: /assets/stickers/tools/argo.svg
