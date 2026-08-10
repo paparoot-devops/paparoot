@@ -21,6 +21,7 @@
 - єдиний layout для сторінок і постів
 - швидкий пошук по заголовках, прев'ю і тегах
 - шаблони для нових технічних статей
+- підтримка рубрик і серій для тематичних циклів
 
 ## Структура
 
@@ -32,6 +33,7 @@
 │   └── post.html
 ├── _posts/
 ├── templates/
+│   ├── post-basic-topic.md
 │   ├── post-existing-system.md
 │   └── post-migration.md
 ├── assets/
@@ -59,6 +61,31 @@
 
 - `templates/post-migration.md`
 
+### `basic-topic`
+
+Для простих пояснювальних постів, коли треба розкласти базову тему без зайвої академічності.
+
+Шаблон:
+
+- `templates/post-basic-topic.md`
+
+## Рубрики і серії
+
+Для великих тем з кількома постами можна використовувати таку схему у front matter:
+
+```yaml
+categories: [devops, basics]
+rubric: "Базові речі"
+series: "devops-basics"
+series_title: "База без магії"
+series_part: 1
+```
+
+- `rubric` це видима рубрика на сайті
+- `series` це технічний ідентифікатор серії
+- `series_title` це людська назва серії
+- `series_part` це порядок поста всередині серії
+
 ## Як додати нову статтю
 
 1. Обери шаблон у `templates/`.
@@ -67,6 +94,8 @@
    - `title`
    - `date`
    - `categories`
+   - `rubric` якщо це окрема рубрика
+   - `series`, `series_title`, `series_part` якщо це серія
    - `tags`
    - `featured`
    - `case_type`

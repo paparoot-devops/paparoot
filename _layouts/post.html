@@ -15,10 +15,35 @@ layout: default
   font-size: 0.92rem;
 }
 
+.post-meta-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.85rem 0 0.2rem;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.58rem;
+  border-radius: 999px;
+  border: 1px solid #2f4f66;
+  background: #193448;
+  color: #a9ecfb;
+  font-size: 0.8rem;
+}
+
+.meta-pill strong {
+  color: #e7f7ff;
+  font-weight: 600;
+}
+
 .muted-dot { opacity: 0.8; }
 
 .toc-box,
-.related-box {
+.related-box,
+.series-box {
   background: #2d3949;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -69,6 +94,9 @@ layout: default
 .related-list li { margin: 0 0 0.5rem; }
 .related-list a { color: #d9eaff; text-decoration: none; }
 .related-list a:hover { color: #8be9fd; }
+.related-list .is-current {
+  color: #8be9fd;
+}
 
 .article-card pre {
   position: relative;
@@ -147,6 +175,16 @@ layout: default
           <span class="muted-dot">•</span>
           <span>{{ reading_time }} min read</span>
         </div>
+        {% if page.rubric or page.series_title %}
+        <div class="post-meta-pills">
+          {% if page.rubric %}
+          <span class="meta-pill"><strong>Рубрика</strong> {{ page.rubric }}</span>
+          {% endif %}
+          {% if page.series_title %}
+          <span class="meta-pill"><strong>Серія</strong> {{ page.series_title }}{% if page.series_part %} · частина {{ page.series_part }}{% endif %}</span>
+          {% endif %}
+        </div>
+        {% endif %}
         <div class="toc-box article-toc" id="toc-box">
           <h3 class="box-title">Зміст</h3>
           <div class="box-inner">
@@ -157,15 +195,47 @@ layout: default
       </article>
     </div>
 
+    {% if page.series %}
+    {% assign series_posts = site.posts | where: "series", page.series | sort: "series_part" %}
+    {% if series_posts.size > 1 %}
+    <section class="content-shell">
+      <div class="series-box">
+        <h3 class="box-title">У цій серії</h3>
+        <div class="box-inner">
+          <ul class="related-list">
+            {% for p in series_posts %}
+              {% assign is_current = p.url == page.url %}
+              <li>
+                {% if is_current %}
+                  <span class="is-current">
+                    {% if p.series_part %}{{ p.series_part }}. {% endif %}{{ p.title }}
+                  </span>
+                {% else %}
+                  <a href="{{ p.url | relative_url }}">
+                    {% if p.series_part %}{{ p.series_part }}. {% endif %}{{ p.title }}
+                  </a>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </section>
+    {% endif %}
+    {% endif %}
+
     {% assign related_pool = site.posts | where_exp: "p", "p.url != page.url" %}
     {% assign related_count = 0 %}
     <section class="content-shell">
       <div class="related-box">
-        <h3 class="box-title">Схожі кейси</h3>
+        <h3 class="box-title">Схожі матеріали</h3>
         <div class="box-inner">
           <ul class="related-list">
             {% for p in related_pool %}
               {% assign match = false %}
+              {% if page.series and p.series == page.series %}
+                {% assign match = true %}
+              {% endif %}
               {% for t in page.tags %}
                 {% if p.tags contains t %}{% assign match = true %}{% endif %}
               {% endfor %}

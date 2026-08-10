@@ -52,6 +52,25 @@ layout: default
   margin-bottom: 0.8rem;
 }
 
+.post-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: -0.2rem 0 0.8rem;
+}
+
+.post-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.16rem 0.46rem;
+  font-size: 0.77rem;
+  color: #8be9fd;
+  background: #193448;
+  border: 1px solid #2f4f66;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
 .post-body {
   display: grid;
   grid-template-columns: 108px 1fr;
@@ -167,13 +186,23 @@ layout: default
     {% for post in site.posts %}
     <article
       class="post-card"
-      data-search="{{ post.title | downcase | escape }} {{ post.excerpt | strip_html | downcase | escape }} {{ post.tags | join: ' ' | downcase | escape }}"
+      data-search="{{ post.title | downcase | escape }} {{ post.excerpt | strip_html | downcase | escape }} {{ post.tags | join: ' ' | downcase | escape }} {{ post.categories | join: ' ' | downcase | escape }} {{ post.rubric | downcase | escape }} {{ post.series_title | downcase | escape }}"
     >
       <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
       {% assign words = post.content | strip_html | number_of_words %}
       {% assign reading_time = words | plus: 199 | divided_by: 200 %}
       {% if reading_time < 1 %}{% assign reading_time = 1 %}{% endif %}
       <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }} · {{ reading_time }} min read</div>
+      {% if post.rubric or post.series_title %}
+      <div class="post-pills">
+        {% if post.rubric %}
+          <span class="post-pill">Рубрика: {{ post.rubric }}</span>
+        {% endif %}
+        {% if post.series_title %}
+          <span class="post-pill">Серія: {{ post.series_title }}{% if post.series_part %} · {{ post.series_part }}{% endif %}</span>
+        {% endif %}
+      </div>
+      {% endif %}
       <div class="post-body">
         <div class="thumb" aria-hidden="true">
           {% if post.preview_image %}
@@ -209,7 +238,17 @@ layout: default
     </section>
 
     <section class="sidebar-box">
-      <h3 class="sidebar-title">Останні кейси</h3>
+      <h3 class="sidebar-title">Рубрики</h3>
+      <div class="sidebar-inner">
+        {% assign rubrics = site.posts | map: "rubric" | compact | uniq | sort %}
+        {% for rubric in rubrics %}
+          <a class="badge filter-badge" href="#quick-search-box" data-filter="{{ rubric }}">{{ rubric }}</a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section class="sidebar-box">
+      <h3 class="sidebar-title">Останні матеріали</h3>
       <div class="sidebar-inner">
         <ul class="mini-list">
           {% for post in site.posts limit: 5 %}
@@ -236,12 +275,21 @@ layout: default
   var input = document.getElementById('quick-search');
   if (!input) return;
   var cards = Array.prototype.slice.call(document.querySelectorAll('.post-card'));
+  var filterBadges = Array.prototype.slice.call(document.querySelectorAll('.filter-badge, .badge'));
 
   input.addEventListener('input', function () {
     var q = (input.value || '').toLowerCase().trim();
     cards.forEach(function (card) {
       var hay = (card.getAttribute('data-search') || '').toLowerCase();
       card.style.display = !q || hay.indexOf(q) !== -1 ? '' : 'none';
+    });
+  });
+
+  filterBadges.forEach(function (badge) {
+    badge.addEventListener('click', function () {
+      var value = badge.getAttribute('data-filter') || badge.textContent || '';
+      input.value = value.trim();
+      input.dispatchEvent(new Event('input'));
     });
   });
 })();
