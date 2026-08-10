@@ -4,6 +4,7 @@ title: "Kubernetes requests і limits без магії"
 date: 2026-08-08 09:00:00 +0200
 categories: [devops, basics]
 rubric: "Базові речі"
+rubric_key: basics
 series: "devops-basics"
 series_title: "База без магії"
 series_part: 1

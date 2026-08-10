@@ -28,10 +28,15 @@
 ```text
 .
 ├── _config.yml
+├── _data/
+│   └── rubrics.yml
 ├── _layouts/
 │   ├── default.html
-│   └── post.html
+│   ├── post.html
+│   └── rubric.html
 ├── _posts/
+├── rubrics/
+│   └── basic-things.md
 ├── templates/
 │   ├── post-basic-topic.md
 │   ├── post-existing-system.md
@@ -76,15 +81,19 @@
 ```yaml
 categories: [devops, basics]
 rubric: "Базові речі"
+rubric_key: basics
 series: "devops-basics"
 series_title: "База без магії"
 series_part: 1
 ```
 
 - `rubric` це видима рубрика на сайті
+- `rubric_key` це стабільний ключ для опису і сторінки рубрики
 - `series` це технічний ідентифікатор серії
 - `series_title` це людська назва серії
 - `series_part` це порядок поста всередині серії
+
+Опис рубрик зберігається в `_data/rubrics.yml`, а сторінки рубрик створюються окремими файлами в `rubrics/`.
 
 ## Як додати нову статтю
 
@@ -95,6 +104,7 @@ series_part: 1
    - `date`
    - `categories`
    - `rubric` якщо це окрема рубрика
+   - `rubric_key` якщо в рубрики є власна сторінка й опис
    - `series`, `series_title`, `series_part` якщо це серія
    - `tags`
    - `featured`

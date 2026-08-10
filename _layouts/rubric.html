@@ -1,0 +1,175 @@
+---
+layout: default
+---
+
+{% assign rubric = site.data.rubrics[page.rubric_key] %}
+{% assign rubric_posts = site.posts | where: "rubric_key", page.rubric_key %}
+
+<style>
+.rubric-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 0.9fr);
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.rubric-grid main,
+.rubric-grid aside {
+  min-width: 0;
+}
+
+.rubric-hero,
+.rubric-box,
+.rubric-post-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.rubric-hero,
+.rubric-post-card {
+  padding: 1rem;
+}
+
+.rubric-hero {
+  margin-bottom: 1rem;
+}
+
+.rubric-hero p,
+.rubric-post-card p,
+.rubric-box-inner {
+  color: #d6e3f5;
+}
+
+.rubric-origin {
+  margin-top: 1rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #2f4f66;
+  border-radius: 10px;
+  background: #193448;
+}
+
+.rubric-post-card {
+  margin-bottom: 0.95rem;
+}
+
+.rubric-post-card h2 {
+  margin: 0 0 0.4rem;
+  font-size: 1.5rem;
+}
+
+.rubric-post-card h2 a {
+  text-decoration: none;
+  color: #f2f7ff;
+}
+
+.rubric-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.7rem;
+}
+
+.rubric-box {
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.rubric-box-title {
+  margin: 0;
+  padding: 0.62rem 0.78rem;
+  border-bottom: 1px solid var(--line);
+  background: #253142;
+  color: #eaf2ff;
+  font-size: 1rem;
+}
+
+.rubric-box-inner {
+  padding: 0.72rem 0.78rem;
+}
+
+.rubric-mini-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rubric-mini-list li {
+  margin-bottom: 0.5rem;
+}
+
+.rubric-mini-list a {
+  color: #d3e2f6;
+  text-decoration: none;
+}
+
+.rubric-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.16rem 0.46rem;
+  font-size: 0.77rem;
+  color: #8be9fd;
+  background: #193448;
+  border: 1px solid #2f4f66;
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  .rubric-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<div class="rubric-grid">
+  <main>
+    <section class="rubric-hero">
+      <h1>{{ rubric.title | default: page.title }}</h1>
+      {% if rubric.description %}
+      <p>{{ rubric.description }}</p>
+      {% endif %}
+      {% if rubric.origin %}
+      <div class="rubric-origin">
+        <strong>Звідки взялась рубрика</strong>
+        <p>{{ rubric.origin }}</p>
+      </div>
+      {% endif %}
+    </section>
+
+    {% assign sorted_posts = rubric_posts | sort: "date" | reverse %}
+    {% for post in sorted_posts %}
+    <article class="rubric-post-card">
+      <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+      {% assign words = post.content | strip_html | number_of_words %}
+      {% assign reading_time = words | plus: 199 | divided_by: 200 %}
+      {% if reading_time < 1 %}{% assign reading_time = 1 %}{% endif %}
+      <div class="rubric-meta">
+        {{ post.date | date: "%Y-%m-%d" }} · {{ reading_time }} min read
+        {% if post.series_title %} · {{ post.series_title }}{% if post.series_part %} · частина {{ post.series_part }}{% endif %}{% endif %}
+      </div>
+      <p>{{ post.excerpt | strip_html | truncate: 260 }}</p>
+      <a class="rubric-pill" href="{{ post.url | relative_url }}">Читати матеріал</a>
+    </article>
+    {% endfor %}
+  </main>
+
+  <aside>
+    <section class="rubric-box">
+      <h2 class="rubric-box-title">У рубриці</h2>
+      <div class="rubric-box-inner">
+        <div>Матеріалів: <strong>{{ rubric_posts | size }}</strong></div>
+      </div>
+    </section>
+
+    <section class="rubric-box">
+      <h2 class="rubric-box-title">Матеріали</h2>
+      <div class="rubric-box-inner">
+        <ul class="rubric-mini-list">
+          {% for post in sorted_posts %}
+          <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </section>
+  </aside>
+</div>

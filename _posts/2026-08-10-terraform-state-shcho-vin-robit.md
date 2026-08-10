@@ -4,6 +4,7 @@ title: "Terraform state: що він робить і чому без нього 
 date: 2026-08-10 09:00:00 +0200
 categories: [devops, basics]
 rubric: "Базові речі"
+rubric_key: basics
 series: "devops-basics"
 series_title: "База без магії"
 series_part: 3

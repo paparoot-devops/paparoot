@@ -71,6 +71,12 @@ layout: default
   text-decoration: none;
 }
 
+.post-pill-link:hover,
+.post-pill-link:focus {
+  color: #d7f8ff;
+  border-color: #4d7992;
+}
+
 .post-body {
   display: grid;
   grid-template-columns: 108px 1fr;
@@ -196,7 +202,15 @@ layout: default
       {% if post.rubric or post.series_title %}
       <div class="post-pills">
         {% if post.rubric %}
-          <span class="post-pill">Рубрика: {{ post.rubric }}</span>
+          {% assign rubric_data = nil %}
+          {% if post.rubric_key %}
+            {% assign rubric_data = site.data.rubrics[post.rubric_key] %}
+          {% endif %}
+          {% if rubric_data and rubric_data.slug %}
+            <a class="post-pill post-pill-link" href="{{ '/rubrics/' | append: rubric_data.slug | append: '/' | relative_url }}">Рубрика: {{ post.rubric }}</a>
+          {% else %}
+            <span class="post-pill">Рубрика: {{ post.rubric }}</span>
+          {% endif %}
         {% endif %}
         {% if post.series_title %}
           <span class="post-pill">Серія: {{ post.series_title }}{% if post.series_part %} · {{ post.series_part }}{% endif %}</span>
@@ -240,9 +254,12 @@ layout: default
     <section class="sidebar-box">
       <h3 class="sidebar-title">Рубрики</h3>
       <div class="sidebar-inner">
-        {% assign rubrics = site.posts | map: "rubric" | compact | uniq | sort %}
-        {% for rubric in rubrics %}
-          <a class="badge filter-badge" href="#quick-search-box" data-filter="{{ rubric }}">{{ rubric }}</a>
+        {% assign rubric_keys = site.posts | map: "rubric_key" | compact | uniq | sort %}
+        {% for rubric_key in rubric_keys %}
+          {% assign rubric = site.data.rubrics[rubric_key] %}
+          {% if rubric and rubric.slug %}
+            <a class="badge rubric-badge" href="{{ '/rubrics/' | append: rubric.slug | append: '/' | relative_url }}">{{ rubric.title }}</a>
+          {% endif %}
         {% endfor %}
       </div>
     </section>
@@ -263,7 +280,7 @@ layout: default
       <div class="sidebar-inner">
         {% assign tags = site.tags | sort %}
         {% for tag in tags %}
-          <a class="badge" href="#quick-search-box">{{ tag[0] }}</a>
+          <a class="badge filter-badge" href="#quick-search-box" data-filter="{{ tag[0] }}">{{ tag[0] }}</a>
         {% endfor %}
       </div>
     </section>
@@ -275,7 +292,7 @@ layout: default
   var input = document.getElementById('quick-search');
   if (!input) return;
   var cards = Array.prototype.slice.call(document.querySelectorAll('.post-card'));
-  var filterBadges = Array.prototype.slice.call(document.querySelectorAll('.filter-badge, .badge'));
+  var filterBadges = Array.prototype.slice.call(document.querySelectorAll('.filter-badge'));
 
   input.addEventListener('input', function () {
     var q = (input.value || '').toLowerCase().trim();

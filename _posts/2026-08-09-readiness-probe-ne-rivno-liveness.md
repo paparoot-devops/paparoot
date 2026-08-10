@@ -4,6 +4,7 @@ title: "Чому readinessProbe це не те саме, що livenessProbe"
 date: 2026-08-09 09:00:00 +0200
 categories: [devops, basics]
 rubric: "Базові речі"
+rubric_key: basics
 series: "devops-basics"
 series_title: "База без магії"
 series_part: 2

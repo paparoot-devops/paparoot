@@ -4,6 +4,7 @@ title: "Назва базової теми"
 date: 2026-08-10 09:00:00 +0200
 categories: [devops, basics]
 rubric: "Базові речі"
+rubric_key: basics
 series: ""
 series_title: ""
 series_part:
