@@ -115,12 +115,5 @@ permalink: /about/
         </ul>
       </div>
     </section>
-
-    <section class="about-side-box">
-      <h2 class="about-side-title">Формат</h2>
-      <div class="about-side-inner">
-        <p>Короткі кейси, розбори рішень, базові пояснення і серія постів на основі реальних співбесід та щоденної інженерної практики.</p>
-      </div>
-    </section>
   </aside>
 </div>
