@@ -4,105 +4,74 @@ layout: default
 
 {% assign rubric = site.data.rubrics[page.rubric_key] %}
 {% assign rubric_posts = site.posts | where: "rubric_key", page.rubric_key %}
+{% assign sorted_posts = rubric_posts | sort: "date" | reverse %}
 
 <style>
-.rubric-grid {
+.content {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(260px, 0.9fr);
   gap: 1rem;
   padding: 1rem;
 }
 
-.rubric-grid main,
-.rubric-grid aside {
-  min-width: 0;
-}
+.main-col,
+.side-col { min-width: 0; }
 
-.rubric-hero,
-.rubric-box,
-.rubric-post-card {
+.post-card {
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 12px;
-}
-
-.rubric-hero,
-.rubric-post-card {
   padding: 1rem;
-}
-
-.rubric-hero {
-  margin-bottom: 1rem;
-}
-
-.rubric-hero p,
-.rubric-post-card p,
-.rubric-box-inner {
-  color: #d6e3f5;
-}
-
-.rubric-origin {
-  margin-top: 1rem;
-  padding: 0.85rem 0.95rem;
-  border: 1px solid #2f4f66;
-  border-radius: 10px;
-  background: #193448;
-}
-
-.rubric-post-card {
   margin-bottom: 0.95rem;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  position: relative;
 }
 
-.rubric-post-card h2 {
-  margin: 0 0 0.4rem;
-  font-size: 1.5rem;
+.post-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--brand-3));
+  opacity: 0.65;
 }
 
-.rubric-post-card h2 a {
+.post-card h1,
+.post-card h2 {
+  margin: 0 0 0.35rem;
+  line-height: 1.2;
+}
+
+.post-card h1 {
+  font-size: 2.1rem;
+}
+
+.post-card h2 {
+  font-size: 1.75rem;
+}
+
+.post-card h2 a {
   text-decoration: none;
   color: #f2f7ff;
 }
 
-.rubric-meta {
+.post-meta {
   color: var(--muted);
   font-size: 0.9rem;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.8rem;
 }
 
-.rubric-box {
-  overflow: hidden;
-  margin-bottom: 0.75rem;
+.post-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.2rem 0 0.8rem;
 }
 
-.rubric-box-title {
-  margin: 0;
-  padding: 0.62rem 0.78rem;
-  border-bottom: 1px solid var(--line);
-  background: #253142;
-  color: #eaf2ff;
-  font-size: 1rem;
-}
-
-.rubric-box-inner {
-  padding: 0.72rem 0.78rem;
-}
-
-.rubric-mini-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.rubric-mini-list li {
-  margin-bottom: 0.5rem;
-}
-
-.rubric-mini-list a {
-  color: #d3e2f6;
-  text-decoration: none;
-}
-
-.rubric-pill {
+.post-pill {
   display: inline-flex;
   align-items: center;
   padding: 0.16rem 0.46rem;
@@ -114,19 +83,110 @@ layout: default
   text-decoration: none;
 }
 
+.post-body {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 0.85rem;
+  align-items: start;
+}
+
+.thumb {
+  width: 108px;
+  height: 108px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(34, 211, 238, 0.24) 0, transparent 42%),
+    linear-gradient(145deg, #1f2937, #0f172a);
+  border: 1px solid #334155;
+}
+
+.thumb img {
+  width: 88px;
+  height: 88px;
+  object-fit: contain;
+  display: block;
+}
+
+.post-excerpt {
+  margin: 0;
+  color: #d6e3f5;
+  line-height: 1.55;
+}
+
+.read-more {
+  text-decoration: none;
+  color: #67e8f9;
+  font-weight: 600;
+}
+
+.tags {
+  margin-top: 0.85rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.sidebar-box {
+  background: #2d3949;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.sidebar-title {
+  margin: 0;
+  padding: 0.62rem 0.78rem;
+  border-bottom: 1px solid var(--line);
+  background: #253142;
+  color: #eaf2ff;
+  font-size: 1rem;
+}
+
+.sidebar-inner { padding: 0.72rem 0.78rem; color: #d7e3f5; }
+
+.mini-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.mini-list li { margin-bottom: 0.48rem; }
+
+.mini-list a {
+  text-decoration: none;
+  color: #d3e2f6;
+}
+
+.rubric-origin {
+  margin-top: 1rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #2f4f66;
+  border-radius: 10px;
+  background: #193448;
+  color: #d6ebff;
+}
+
+.rubric-origin p {
+  margin: 0.45rem 0 0;
+}
+
 @media (max-width: 900px) {
-  .rubric-grid {
-    grid-template-columns: 1fr;
-  }
+  .content { grid-template-columns: 1fr; }
+  .post-body { grid-template-columns: 1fr; }
+  .thumb { width: 100%; height: 128px; }
 }
 </style>
 
-<div class="rubric-grid">
-  <main>
-    <section class="rubric-hero">
+<div class="content">
+  <main class="main-col">
+    <article class="post-card">
       <h1>{{ rubric.title | default: page.title }}</h1>
       {% if rubric.description %}
-      <p>{{ rubric.description }}</p>
+      <p class="post-excerpt">{{ rubric.description }}</p>
       {% endif %}
       {% if rubric.origin %}
       <div class="rubric-origin">
@@ -134,37 +194,55 @@ layout: default
         <p>{{ rubric.origin }}</p>
       </div>
       {% endif %}
-    </section>
+    </article>
 
-    {% assign sorted_posts = rubric_posts | sort: "date" | reverse %}
     {% for post in sorted_posts %}
-    <article class="rubric-post-card">
+    <article class="post-card">
       <h2><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
       {% assign words = post.content | strip_html | number_of_words %}
       {% assign reading_time = words | plus: 199 | divided_by: 200 %}
       {% if reading_time < 1 %}{% assign reading_time = 1 %}{% endif %}
-      <div class="rubric-meta">
-        {{ post.date | date: "%Y-%m-%d" }} · {{ reading_time }} min read
-        {% if post.series_title %} · {{ post.series_title }}{% if post.series_part %} · частина {{ post.series_part }}{% endif %}{% endif %}
+      <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }} · {{ reading_time }} min read</div>
+      {% if post.rubric or post.series_title %}
+      <div class="post-pills">
+        {% if post.rubric %}
+          <span class="post-pill">Рубрика: {{ post.rubric }}</span>
+        {% endif %}
+        {% if post.series_title %}
+          <span class="post-pill">Серія: {{ post.series_title }}{% if post.series_part %} · {{ post.series_part }}{% endif %}</span>
+        {% endif %}
       </div>
-      <p>{{ post.excerpt | strip_html | truncate: 260 }}</p>
-      <a class="rubric-pill" href="{{ post.url | relative_url }}">Читати матеріал</a>
+      {% endif %}
+      <div class="post-body">
+        <div class="thumb" aria-hidden="true">
+          {% if post.preview_image %}
+            <img src="{{ post.preview_image | relative_url }}" alt="">
+          {% endif %}
+        </div>
+        <div>
+          <p class="post-excerpt">{{ post.excerpt | strip_html | truncate: 250 }}</p>
+          <a class="read-more" href="{{ post.url | relative_url }}">Читати далі »</a>
+        </div>
+      </div>
+      {% if post.tags and post.tags.size > 0 %}
+      <div class="tags">Теги: {{ post.tags | join: ", " }}</div>
+      {% endif %}
     </article>
     {% endfor %}
   </main>
 
-  <aside>
-    <section class="rubric-box">
-      <h2 class="rubric-box-title">У рубриці</h2>
-      <div class="rubric-box-inner">
+  <aside class="side-col">
+    <section class="sidebar-box">
+      <h2 class="sidebar-title">У рубриці</h2>
+      <div class="sidebar-inner">
         <div>Матеріалів: <strong>{{ rubric_posts | size }}</strong></div>
       </div>
     </section>
 
-    <section class="rubric-box">
-      <h2 class="rubric-box-title">Матеріали</h2>
-      <div class="rubric-box-inner">
-        <ul class="rubric-mini-list">
+    <section class="sidebar-box">
+      <h2 class="sidebar-title">Матеріали</h2>
+      <div class="sidebar-inner">
+        <ul class="mini-list">
           {% for post in sorted_posts %}
           <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
           {% endfor %}
