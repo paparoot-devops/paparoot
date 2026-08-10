@@ -229,6 +229,12 @@ layout: default
       {% endif %}
     </article>
     {% endfor %}
+    {% if sorted_posts.size == 0 %}
+    <article class="post-card">
+      <h2>Поки що без матеріалів</h2>
+      <p class="post-excerpt">Опис рубрики вже є, а самі пости з'являться трохи пізніше. Тут буде серія простих і приземлених матеріалів без зайвої магії.</p>
+    </article>
+    {% endif %}
   </main>
 
   <aside class="side-col">
@@ -242,11 +248,15 @@ layout: default
     <section class="sidebar-box">
       <h2 class="sidebar-title">Матеріали</h2>
       <div class="sidebar-inner">
+        {% if sorted_posts.size == 0 %}
+        <div>Поки що тут порожньо.</div>
+        {% else %}
         <ul class="mini-list">
           {% for post in sorted_posts %}
           <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
           {% endfor %}
         </ul>
+        {% endif %}
       </div>
     </section>
   </aside>
