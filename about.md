@@ -83,21 +83,12 @@ permalink: /about/
       <h2>Що тут буде</h2>
       <p>Основний фокус блогу це короткі й середні за розміром технічні статті з живим контекстом. Без вигаданих “ідеальних” платформ, зате з нормальною інженерною логікою: яка була стартова точка, що саме не влаштовувало, чому обрано саме таке рішення і як я перевіряю, що воно не зробило систему гіршою.</p>
 
-      <p>Окремим блоком хочу вести прості статті на базові теми. За останні пів року співбесід дуже добре видно, де в людей є реальне розуміння, а де лише знайомі слова на кшталт <code>Kubernetes</code>, <code>Terraform</code> чи <code>observability</code>. Ці нотатки теж підуть сюди.</p>
-
-      <h2>Для кого цей блог</h2>
-      <ul class="about-list">
-        <li>Для DevOps і platform engineers, яким ближчий прагматичний підхід, а не “магія з презентації”.</li>
-        <li>Для тих, хто росте з <code>junior</code> або <code>middle</code> рівня і хоче зрозуміти не тільки “як зробити”, а й “чому саме так”.</li>
-        <li>Для команд, яким потрібні короткі технічні розбори без води і без штучного героїзму.</li>
-      </ul>
-
       <h2>Про що пишу найчастіше</h2>
       <ul class="about-list">
-        <li><code>Kubernetes</code>, Helm, ingress, rollout-и і дрібні нюанси експлуатації.</li>
-        <li><code>Terraform</code>, модулі, state, drift і все, що починає боліти після красивого демо.</li>
-        <li><code>CI/CD</code>, delivery-процеси, release hygiene і технічний борг у pipeline-ах.</li>
-        <li><code>Observability</code>, алерти, Grafana, Prometheus і якість сигналу замість шуму.</li>
+        <li>Kubernetes, Helm, ingress, rollout-и і дрібні нюанси експлуатації.</li>
+        <li>Terraform, модулі, state, drift і все, що починає боліти після красивого демо.</li>
+        <li>CI/CD, delivery-процеси, release hygiene і технічний борг у pipeline-ах.</li>
+        <li>Observability, алерти, Grafana, Prometheus і якість сигналу замість шуму.</li>
         <li>Linux, networking, troubleshooting і супутні речі, без яких DevOps швидко перетворюється на набір кнопок.</li>
       </ul>
 
@@ -116,10 +107,10 @@ permalink: /about/
       <h2 class="about-side-title">Основні теми</h2>
       <div class="about-side-inner">
         <ul class="about-list">
-          <li><code>Kubernetes</code></li>
-          <li><code>Terraform</code></li>
-          <li><code>CI/CD</code></li>
-          <li><code>Observability</code></li>
+          <li>Kubernetes</li>
+          <li>Terraform</li>
+          <li>CI/CD</li>
+          <li>Observability</li>
           <li>Linux і networking</li>
         </ul>
       </div>
