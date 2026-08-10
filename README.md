@@ -80,7 +80,7 @@
 
 ```yaml
 categories: [devops, basics]
-rubric: "Базові речі"
+rubric: "DevOps база - back to the core"
 rubric_key: basics
 series: "devops-basics"
 series_title: "База без магії"
