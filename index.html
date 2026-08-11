@@ -199,7 +199,8 @@ layout: default
       {% assign reading_time = words | plus: 199 | divided_by: 200 %}
       {% if reading_time < 1 %}{% assign reading_time = 1 %}{% endif %}
       <div class="post-meta">{{ post.date | date: "%Y-%m-%d" }} · {{ reading_time }} min read</div>
-      {% if post.rubric or post.series_title %}
+      {% assign series_title_clean = post.series_title | default: "" | strip %}
+      {% if post.rubric or series_title_clean != "" %}
       <div class="post-pills">
         {% if post.rubric %}
           {% assign rubric_data = nil %}
@@ -212,8 +213,8 @@ layout: default
             <span class="post-pill">Рубрика: {{ post.rubric }}</span>
           {% endif %}
         {% endif %}
-        {% if post.series_title %}
-          <span class="post-pill">Серія: {{ post.series_title }}{% if post.series_part %} · {{ post.series_part }}{% endif %}</span>
+        {% if series_title_clean != "" %}
+          <span class="post-pill">Серія: {{ series_title_clean }}{% if post.series_part %} · {{ post.series_part }}{% endif %}</span>
         {% endif %}
       </div>
       {% endif %}

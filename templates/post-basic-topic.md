@@ -5,9 +5,6 @@ date: 2026-08-10 09:00:00 +0200
 categories: [devops, basics]
 rubric: "DevOps база - back to the core"
 rubric_key: basics
-series: ""
-series_title: ""
-series_part:
 tags: [basics]
 featured: false
 preview_image: /assets/stickers/tools/linux.svg

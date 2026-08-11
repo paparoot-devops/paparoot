@@ -5,9 +5,6 @@ date: 2026-05-25 10:00:00 +0200
 categories: [devops]
 rubric: ""
 rubric_key: ""
-series: ""
-series_title: ""
-series_part:
 tags: [migration, platform]
 featured: false
 case_type: migration

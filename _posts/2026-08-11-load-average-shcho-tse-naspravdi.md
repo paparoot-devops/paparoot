@@ -1,13 +1,10 @@
 ---
 layout: post
 title: "Load Average: що це насправді і чому це не тільки про CPU"
-date: 2026-08-11 19:00:00 +0200
+date: 2026-08-11 09:00:00 +0200
 categories: [devops, basics]
 rubric: "DevOps база - back to the core"
 rubric_key: basics
-series: ""
-series_title: ""
-series_part:
 tags: [linux, load-average, performance, cpu, io]
 featured: false
 preview_image: /assets/stickers/tools/linux.svg
@@ -38,21 +35,21 @@ Load Average - показник загального, середнього на�
 Тож давайте тепер згадаємо де ці самі циферки побачити, для цього нам треба руками писати в терміналі літери заморські, топ команд якими можна подивить виглядає так:
 1. uptime - не тільки час роботи системи без перезавантажень і показник незламності, а ще й надає інформацію стосовно Load Average.
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810172645.png' | relative_url }}" alt="uptime" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810172645.png' | relative_url }}" alt="uptime" />
 
 2. w - мінімалістична команда яка показує хто, як, коли залогінився на хост, але також показує uptime і Load Average.
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810173237.png' | relative_url }}" alt="w" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810173237.png' | relative_url }}" alt="w" />
 
 3. cat /proc/loadavg - для гурманів, якщо дуже хочеться прямо з ядра отримати інформацію.
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810173549.png' | relative_url }}" alt="cat /proc/loadavg" style="max-width:672px;width:100%;height:auto;" />
+   <img class="post-shot post-shot--narrow" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810173549.png' | relative_url }}" alt="cat /proc/loadavg" />
 
 4. ну і звісно, незмінна класика на якій все тримається top/htop.
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174045.png' | relative_url }}" alt="top" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174045.png' | relative_url }}" alt="top" />
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174119.png' | relative_url }}" alt="htop" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174119.png' | relative_url }}" alt="htop" />
 
 5. sar - утиліта з пакету sysstat, дозволяє збирати і дивитись історичну статистику по системі, її функціонал ширший за показ load average, але і це вона вміє
 
@@ -60,7 +57,7 @@ Load Average - показник загального, середнього на�
    sar -q 1 5
    ```
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174513.png' | relative_url }}" alt="sar -q 1 5" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174513.png' | relative_url }}" alt="sar -q 1 5" />
 
    runq-sz - середня довжина черги задач на CPU за інтервал вимірювання
    plist-sz - загальне число процесів/потоків в системі
@@ -76,22 +73,22 @@ Load Average - показник загального, середнього на�
 1. Для першого прикладу попросив AI згенерити скрипт який запускає воркерів в паралелі для запису псевдоданих великими блоками і подивимось через `htop`.
    Старт запуску:
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811132102.png' | relative_url }}" alt="htop старт дискового навантаження" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811132102.png' | relative_url }}" alt="htop старт дискового навантаження" />
 
    і одразу через `iostat` подивимось як диск себе почуває
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811132324.png' | relative_url }}" alt="iostat старт дискового навантаження" style="max-width:673px;width:100%;height:auto;" />
+   <img class="post-shot post-shot--narrow" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811132324.png' | relative_url }}" alt="iostat старт дискового навантаження" />
 
    `iostat` це утиліта з пакету `sysstat`, яка показує статистику по дисках і CPU. У цьому прикладі нас цікавлять в першу чергу `w/s` і `wkB/s`, тобто інтенсивність запису, `w_await`, тобто скільки в середньому чекає одна операція запису, `aqu-sz`, тобто середня довжина черги I/O, і `%util`, який грубо показує наскільки пристрій зайнятий.
    Load Average при запуску дорівнює 7.56, що в принципі не погано, на цьому етапі сказати що система перевантажена ще не можна.
    Бачимо що основне навантаження припадає саме на запис на диск, а не на читання. Для `nvme0n1` значення `w/s` становить близько `6781`, а `wkB/s` близько `856332`, тобто диск виконує тисячі операцій запису щосекунди та пропускає приблизно `836 MiB/s` запису. Значення `w_await` становить близько `33 ms`, тобто кожна операція запису в середньому очікує десятки мілісекунд. Показник `aqu-sz` близько `225` означає дуже велику середню довжину черги I/O. При цьому сам `load average` ще не виглядає страшно.
    Пік навантаження:
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811133400.png' | relative_url }}" alt="htop пік дискового навантаження" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811133400.png' | relative_url }}" alt="htop пік дискового навантаження" />
 
    і знову показники `iostat`
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811133519.png' | relative_url }}" alt="iostat пік дискового навантаження" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811133519.png' | relative_url }}" alt="iostat пік дискового навантаження" />
 
    Як під час запуску так і в піку перше що кидається в очі це CPU, кожне ядро не навантажене навіть на половину. А в нас, на хвилиночку, `16` ядер, тобто для чисто CPU історії тут ще дуже далеко. Але черга запису на диск вже така, ніби хтось вирішив прогнати через ноутбук датацентр. Для `nvme0n1` в піку маємо `w/s` близько `4226`, `wkB/s` близько `493696`, `w_await` близько `37 ms`, `aqu-sz` близько `158`, а `%util` доходить до `91.30`. Тобто процеси тут впираються не в compute, а масово чекають завершення I/O.
    І сам Load Average показує значення 40, що на наші 16 ядер - виглядає як дуже сильне перевантаження системи, але не за рахунок CPU, а через кількість операцій на диску, та їх очікування.
@@ -100,27 +97,27 @@ Load Average - показник загального, середнього на�
 2. Для другого експерименту попросив AI згенерувати скрипт який би так само воркерами в паралелі шифрував потік даних в `AES-256-CTR`.
    Старт запуску:
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811165212.png' | relative_url }}" alt="htop старт cpu навантаження" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811165212.png' | relative_url }}" alt="htop старт cpu навантаження" />
 
    і тут одразу поглянемо `mpstat -P ALL 1`
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811165318.png' | relative_url }}" alt="mpstat старт cpu навантаження" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811165318.png' | relative_url }}" alt="mpstat старт cpu навантаження" />
 
    `mpstat` це теж утиліта з `sysstat`, надає інформацію про завантаження процесорів. Ключ `-P ALL` каже показати статистику по всіх ядрах окремо, а `1` означає що дані оновлюються щосекунди. Тут для нас найважливіші `%usr`, `%sys`, `%iowait` і `%idle`, бо саме вони швидко показують чи CPU реально працює, чи стоїть і чекає зовнішній ресурс.
    Тут уже картина зовсім інша. Якщо в першому прикладі система в основному впиралась у диск, то тут ми чесно впираємось саме в CPU. На `htop` видно що всі `16` ядер забиті практично під `100%`. `mpstat` це тільки підтверджує. По всіх ядрах `%idle` майже нульовий, `iowait` теж практично нульовий, а основний час іде в `user` та `system`. `%idle` в цьому контексті це відсоток часу, коли конкретне ядро буквально нічого не робить. Тобто якщо `%idle` близький до `0`, ядро майже весь час зайняте роботою, а якщо він високий, то в CPU ще є запас. У нашому випадку CPU не чекає диск, не нудьгує і не прикидається зайнятим, він реально молотить без паузи.
    І тут є ще одна корисна деталь. На старті `load average` у мене близько `5.06`, хоча всі ядра вже зайняті. Це нормальна поведінка метрики. `Load average` не стрибає миттєво, бо це усереднене значення за `1`, `5` і `15` хвилин. Тобто короткий CPU-спайк або свіже навантаження спочатку видно по `htop` і `mpstat`, а вже потім воно доганяє `load average`.
    Пік навантаження:
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811170909.png' | relative_url }}" alt="htop пік cpu навантаження" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811170909.png' | relative_url }}" alt="htop пік cpu навантаження" />
 
    і знову `mpstat -P ALL 1`
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811170959.png' | relative_url }}" alt="mpstat пік cpu навантаження" style="max-width:100%;height:auto;" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811170959.png' | relative_url }}" alt="mpstat пік cpu навантаження" />
 
    На піку картина прогнозовано погіршується. `htop` показує `load average` вже на рівні `35.84`, `28.78` і `16.62`, тобто для машини з `16` ядрами це вже не легенька прогулянка, а цілком явна черга задач, і буду відвертим, ноут починає відчутно гальмувати. При цьому `mpstat` майже не змінює характер навантаження: `%idle` по ядрах все ще практично нульовий, `iowait` не росте, а основний час і далі йде в `user` та `system`.
    Підсумуємо: Це якраз і є дзеркальна ситуація відносно першого прикладу. Якщо там високий `load average` був через чергу I/O, то тут він росте тому що задач реально багато і всі ядра постійно зайняті. Тобто цього разу цифра велика не тому що система чекає поки диск щось запише, а реально опрацьовує процеси.
 
-Ще один важливий момент, який часто плутають: сам по собі обсяг зайнятої RAM не входить у `load average`. Тобто велике споживання пам'яті не робить `load average` високим автоматично. Але на нього цілком можуть впливати `memory pressure`, `direct reclaim`, `swap in/out` і загальна `swap activity`, коли вони штовхають систему в затримки, reclaim path і очікування пов'язаних операцій. Тобто не RAM як цифра, а поведінка системи під тиском пам'яті.
+Ще один важливий момент, який часто плутають: сам по собі обсяг зайнятої RAM не входить у `load average`. Тобто велике споживання пам'яті не робить `load average` високим автоматично. Але на нього цілком можуть впливати `memory pressure`, `direct reclaim`, `swap in/out` і загальна `swap activity`, коли вони приводять до затримок в системі, reclaim path і очікування пов'язаних операцій. Тобто не RAM як цифра, а поведінка системи під тиском пам'яті.
 
 Схожа історія і з мережею. Сам по собі високий мережевий трафік не означає високий `load average`. Але якщо навантаження впирається у мережеве сховище, повільний remote filesystem, NFS, FUSE, block-backed network storage або інші місця, де процеси починають чекати завершення kernel-операцій, тоді це вже може відбитися і на `load average`. Тобто причина знову не в "мережі як графіку в мегабітах", а в тому, що задачі зависають в очікуванні ресурсу.
 

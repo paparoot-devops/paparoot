@@ -122,6 +122,15 @@ layout: default
   cursor: zoom-in;
 }
 
+.article-card img.post-shot {
+  width: auto;
+  max-width: min(100%, 1040px) !important;
+}
+
+.article-card img.post-shot--narrow {
+  max-width: min(100%, 760px) !important;
+}
+
 .img-lightbox {
   position: fixed;
   inset: 0;
@@ -181,6 +190,8 @@ layout: default
         {% if page.rubric_key %}
           {% assign rubric_data = site.data.rubrics[page.rubric_key] %}
         {% endif %}
+        {% assign series_title_clean = page.series_title | default: "" | strip %}
+        {% assign series_key_clean = page.series | default: "" | strip %}
         {% assign words = content | strip_html | number_of_words %}
         {% assign reading_time = words | plus: 199 | divided_by: 200 %}
         {% if reading_time < 1 %}{% assign reading_time = 1 %}{% endif %}
@@ -189,7 +200,7 @@ layout: default
           <span class="muted-dot">•</span>
           <span>{{ reading_time }} min read</span>
         </div>
-        {% if page.rubric or page.series_title %}
+        {% if page.rubric or series_title_clean != "" %}
         <div class="post-meta-pills">
           {% if page.rubric %}
             {% if rubric_data and rubric_data.slug %}
@@ -198,8 +209,8 @@ layout: default
             <span class="meta-pill"><strong>Рубрика</strong> {{ page.rubric }}</span>
             {% endif %}
           {% endif %}
-          {% if page.series_title %}
-          <span class="meta-pill"><strong>Серія</strong> {{ page.series_title }}{% if page.series_part %} · частина {{ page.series_part }}{% endif %}</span>
+          {% if series_title_clean != "" %}
+          <span class="meta-pill"><strong>Серія</strong> {{ series_title_clean }}{% if page.series_part %} · частина {{ page.series_part }}{% endif %}</span>
           {% endif %}
         </div>
         {% endif %}
@@ -213,8 +224,8 @@ layout: default
       </article>
     </div>
 
-    {% if page.series %}
-    {% assign series_posts = site.posts | where: "series", page.series | sort: "series_part" %}
+    {% if series_key_clean != "" %}
+    {% assign series_posts = site.posts | where: "series", series_key_clean | sort: "series_part" %}
     {% if series_posts.size > 1 %}
     <section class="content-shell">
       <div class="series-box">
@@ -251,7 +262,7 @@ layout: default
           <ul class="related-list">
             {% for p in related_pool %}
               {% assign match = false %}
-              {% if page.series and p.series == page.series %}
+              {% if series_key_clean != "" and p.series == series_key_clean %}
                 {% assign match = true %}
               {% endif %}
               {% for t in page.tags %}
