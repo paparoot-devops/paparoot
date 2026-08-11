@@ -123,12 +123,21 @@ layout: default
 }
 
 .article-card img.post-shot {
-  width: auto;
-  max-width: min(100%, 1040px) !important;
+  width: 86% !important;
+  max-width: 900px !important;
 }
 
 .article-card img.post-shot--narrow {
-  max-width: min(100%, 760px) !important;
+  width: 68% !important;
+  max-width: 680px !important;
+}
+
+@media (max-width: 900px) {
+  .article-card img.post-shot,
+  .article-card img.post-shot--narrow {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
 
 .img-lightbox {
