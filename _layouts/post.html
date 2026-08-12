@@ -242,9 +242,8 @@ layout: default
         <div class="box-inner">
           <ul class="related-list">
             {% for p in series_posts %}
-              {% assign is_current = p.url == page.url %}
               <li>
-                {% if is_current %}
+                {% if p.url == page.url %}
                   <span class="is-current">
                     {% if p.series_part %}{{ p.series_part }}. {% endif %}{{ p.title }}
                   </span>

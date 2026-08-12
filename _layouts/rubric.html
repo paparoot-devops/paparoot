@@ -3,8 +3,7 @@ layout: default
 ---
 
 {% assign rubric = site.data.rubrics[page.rubric_key] %}
-{% assign rubric_title = rubric.title | default: page.title %}
-{% assign rubric_posts = site.posts | where_exp: "p", "p.rubric_key == page.rubric_key or p.rubric == rubric_title" %}
+{% assign rubric_posts = site.posts | where: "rubric_key", page.rubric_key %}
 {% assign sorted_posts = rubric_posts | sort: "date" | reverse %}
 
 <style>
