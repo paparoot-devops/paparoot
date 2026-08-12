@@ -43,7 +43,7 @@ Load Average - показник загального, середнього на�
 
 3. cat /proc/loadavg - для гурманів, якщо дуже хочеться прямо з ядра отримати інформацію.
 
-   <img class="post-shot post-shot--narrow" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810173549.png' | relative_url }}" alt="cat /proc/loadavg" />
+   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810173549.png' | relative_url }}" alt="cat /proc/loadavg" />
 
 4. ну і звісно, незмінна класика на якій все тримається top/htop.
 
