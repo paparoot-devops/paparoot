@@ -77,7 +77,7 @@ Load Average - показник загального, середнього на�
 
    і одразу через `iostat` подивимось як диск себе почуває
 
-   <img class="post-shot post-shot--narrow" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811132324.png' | relative_url }}" alt="iostat старт дискового навантаження" style="display:block;margin:12px auto;max-width:820px;width:82%;height:auto;" />
+   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811132324.png' | relative_url }}" alt="iostat старт дискового навантаження" style="display:block;margin:12px auto;max-width:820px;width:82%;height:auto;" />
 
    `iostat` це утиліта з пакету `sysstat`, яка показує статистику по CPU і блочних пристроях. У цьому прикладі нас цікавить саме дискова частина, а в першу чергу `w/s` і `wkB/s`, тобто інтенсивність запису, `w_await`, тобто скільки в середньому чекає одна операція запису, `aqu-sz`, тобто середня довжина черги I/O, і `%util`, який грубо показує наскільки пристрій зайнятий.
    Load Average при запуску дорівнює 7.56, що в принципі не погано, на цьому етапі сказати що система перевантажена ще не можна.
@@ -88,7 +88,7 @@ Load Average - показник загального, середнього на�
 
    і знову показники `iostat`
 
-   <img class="post-shot" src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811133519.png' | relative_url }}" alt="iostat пік дискового навантаження" style="display:block;margin:12px auto;max-width:820px;width:82%;height:auto;" />
+   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260811133519.png' | relative_url }}" alt="iostat пік дискового навантаження" style="display:block;margin:12px auto;max-width:820px;width:82%;height:auto;" />
 
    Як під час запуску так і в піку перше що кидається в очі це CPU, кожне ядро не навантажене навіть на половину. А в нас, на хвилиночку, `16` ядер, тобто для чисто CPU історії тут ще дуже далеко. Але черга запису на диск вже така, ніби хтось вирішив прогнати через ноутбук датацентр. Для `nvme0n1` в піку маємо `w/s` близько `4226`, `wkB/s` близько `493696`, `w_await` близько `37 ms`, `aqu-sz` близько `158`, а `%util` доходить до `91.30`. Тобто процеси тут впираються не в compute, а масово чекають завершення I/O.
    І сам Load Average показує значення 40, що на наші 16 ядер - виглядає як дуже сильне перевантаження системи, але не за рахунок CPU, а через кількість операцій на диску, та їх очікування.
