@@ -47,9 +47,9 @@ Load Average - показник загального, середнього на�
 
 4. ну і звісно, незмінна класика на якій все тримається top/htop.
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174045.png' | relative_url }}" alt="top" style="display:block;margin:12px auto;max-width:560px;width:56%;height:auto;" />
+   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174045.png' | relative_url }}" alt="top" style="display:block;margin:12px auto;max-width:760px;width:72%;height:auto;" />
 
-   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174119.png' | relative_url }}" alt="htop" style="display:block;margin:12px auto;max-width:560px;width:56%;height:auto;" />
+   <img src="{{ '/assets/img/posts/load-average-shcho-tse-naspravdi/pasted-image-20260810174119.png' | relative_url }}" alt="htop" style="display:block;margin:12px auto;max-width:760px;width:72%;height:auto;" />
 
 5. sar - утиліта з пакету sysstat, дозволяє збирати і дивитись історичну статистику по системі, її функціонал ширший за показ load average, але і це вона вміє
 
