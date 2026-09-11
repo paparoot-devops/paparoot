@@ -38,6 +38,7 @@ excerpt: "Оцінюємо варіанти міграції single-node інс�
 | `harbor-jobservice` | harbor-jobservice    | Виконує асинхронні задачі. Серед них реплікація, GC, сканування, tag retention, webhooks і SBOM                                                   |
 | `trivy-adapter`     | trivy-adapter-photon | Сканер уразливостей за Harbor Scanner API. Тримає локальний кеш vuln-БД                                                                           |
 | `harbor-log`        | harbor-log           | rsyslog-збірник. Усі контейнери логують сюди через syslog-драйвер, файли лягають у `/var/log/harbor/`                                             |
+{: .component-table}
 
 І все це добро живе на одній ноді, тому про HA тут не йдеться. Усі образи дбайливо зберігаються на локальному диску хоста в `/mnt/data/registry`. Наше завдання - побудувати настільки відмовостійку архітектуру, наскільки це дозволяють сам Harbor і компоненти, які він використовує.
 
@@ -104,6 +105,10 @@ excerpt: "Оцінюємо варіанти міграції single-node інс�
 6. Для PostgreSQL потрібен стабільний endpoint або proxy, який направляє з'єднання тільки на поточний primary. Поточний Redis primary Harbor знаходить через Sentinel.
 7. Ноди обох кластерів маємо рознести між незалежними failure domains, щоб втрата одного хоста або зони не забрала quorum.
 8. Backup і restore нікуди не зникають. Реплікація захищає від падіння ноди, але не від випадкового видалення даних або пошкодження, яке встигло реплікуватися.
+
+Схематично обрана архітектура виглядає так.
+
+<img src="{{ '/assets/img/posts/harbor-migration-part-1/harbor-selected-architecture.png' | relative_url }}" alt="Обрана HA-архітектура Harbor у Kubernetes" style="display:block;margin:18px auto;max-width:1200px;width:100%;height:auto;">
 
 HA захищає нас від падіння окремої ноди, але не гарантує zero-downtime upgrade Harbor. Якщо нова версія змінює схему бази даних, під час оновлення все одно може знадобитися downtime. Його реальну тривалість перевіримо під час тестового upgrade.
 
